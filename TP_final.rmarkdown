@@ -15,6 +15,7 @@ format:
 editor: visual
 ---
 
+
 ## Introduccion
 
 Se nos presenta una base de datos sobre universidades publicas y privadas con las siguientes variables
@@ -34,6 +35,7 @@ Se nos presenta una base de datos sobre universidades publicas y privadas con la
 La variable de interés es `tasa_grad` que indica el porcentaje de estudiantes que se gradúan
 
 A continuacion se importan las librerias que utilizaremos y se lee la funte de la base de datos
+
 
 ```{r}
 #| message: FALSE
@@ -61,7 +63,9 @@ continuous_vars <- df %>%
 head(df)
 ```
 
+
 ## Resumen de los datos
+
 
 ```{r}
 skimr::skim(df)
@@ -78,8 +82,10 @@ ggpairs(df)
 
 
 
+
 Consigna I: Regresión Lineal
 1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.
+
 
 ```{r}
 set.seed(1234)
@@ -93,22 +99,28 @@ df_test <- slice(df, -filas_train)
 
 
 
+
 2. Ajustar tres modelos diferentes de Regresión Lineal Múltiple con el método de los Mínimos Cuadrados Ordinarios (MCO), definiendo como variable respuesta a la tasa de graduación de cada universidad. Se debe justificar por qué se eligieron a esos tres modelos en particular (ejemplo: procesos automáticos, técnica del mejor subconjunto, criterios propios, etc.).
 
 Primer modelo con unicamente `cuota` como variable predictora
+
 ```{r}
 mod1 = lm(formula = tasa_grad ~ cuota, data = df_train)
 summary(mod1)
 ```
 
 
+
 Segundo modelo con `cuota` y `top10` como variables predictoras
+
 ```{r}
 mod2 = lm(formula = tasa_grad ~ cuota + top10, data = df_train)
 summary(mod2)
 ```
 
+
 Tercer modelo con todas las variables predictoras
+
 
 ```{r}
 mod3 = lm(formula = tasa_grad ~ ., data = df_train)
@@ -116,7 +128,9 @@ summary(mod3)
 ```
 
 
+
 3. Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo “ganador”.
+
 
 ```{r}
 sum_sq_error1 = sum(mod1$residuals^2)
@@ -142,6 +156,7 @@ mod3_BIC = BIC(mod3)
 
 
 ```
+
 
 
 
@@ -229,3 +244,4 @@ Consigna III: Regresión Logística
 
 
 5. Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.
+
