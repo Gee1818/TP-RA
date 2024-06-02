@@ -68,10 +68,6 @@ head(df)
 ## Resumen de los datos
 
 ```{r}
-df %>% ggplot(aes(x = log(estudiantes), y = prof_dr)) + geom_point()
-```
-
-```{r}
 skimr::skim(df)
 corrplot(cor(dplyr::select(df, -privada)),
          method = "color",
