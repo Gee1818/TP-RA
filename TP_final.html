@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="TP_final_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="TP_final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="TP_final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+
 <link href="TP_final_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="TP_final_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 
@@ -83,7 +84,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#introduccion" id="toc-introduccion" class="nav-link active" data-scroll-target="#introduccion">Introduccion</a></li>
-  <li><a href="#resumen-de-los-datos" id="toc-resumen-de-los-datos" class="nav-link" data-scroll-target="#resumen-de-los-datos">Resumen de los datos</a></li>
+  <li><a href="#resumen-de-los-datos" id="toc-resumen-de-los-datos" class="nav-link" data-scroll-target="#resumen-de-los-datos">Resumen de los datos</a>
+  <ul class="collapse">
+  <li><a href="#modelos-alternativos" id="toc-modelos-alternativos" class="nav-link" data-scroll-target="#modelos-alternativos">Modelos alternativos</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="TP_final.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -111,9 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-
 </header>
-
 
 <section id="introduccion" class="level2">
 <h2 class="anchored" data-anchor-id="introduccion">Introduccion</h2>
@@ -171,34 +173,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La variable de interés es <code>tasa_grad</code> que indica el porcentaje de estudiantes que se gradúan</p>
 <p>A continuacion se importan las librerias que utilizaremos y se lee la funte de la base de datos</p>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'caret' was built under R version 4.3.2</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'corrplot' was built under R version 4.3.2</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaps)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'pROC' was built under R version 4.3.2</code></pre>
+</div>
 </div>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.delim</span>(<span class="st">'1-data/universidades.txt'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">privada =</span> <span class="fu">factor</span>(privada))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>categoricals_vars <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.factor)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>continuous_vars <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">read.delim</span>(<span class="st">'1-data/universidades.txt'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">privada =</span> <span class="fu">factor</span>(privada))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># categoricals_vars &lt;- df %&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(where(is.factor)) %&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   names()</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># continuous_vars &lt;- df %&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(where(is.numeric)) %&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   names()</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
+
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["privada"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aplicaciones"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["ingresantes"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["estudiantes"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["top10"],"name":[5],"type":["int"],"align":["right"]},{"label":["cuota"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["prof_dr"],"name":[7],"type":["int"],"align":["right"]},{"label":["razon"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["tasa_grad"],"name":[9],"type":["int"],"align":["right"]}],"data":[{"1":"Si","2":"1.660","3":"0.721","4":"2.885","5":"23","6":"7.44","7":"70","8":"18.1","9":"60","_rn_":"1"},{"1":"Si","2":"2.186","3":"0.512","4":"2.683","5":"16","6":"12.28","7":"29","8":"12.2","9":"56","_rn_":"2"},{"1":"Si","2":"1.428","3":"0.336","4":"1.036","5":"22","6":"11.25","7":"53","8":"12.9","9":"54","_rn_":"3"},{"1":"Si","2":"0.417","3":"0.137","4":"0.510","5":"60","6":"12.96","7":"92","8":"7.7","9":"59","_rn_":"4"},{"1":"Si","2":"0.193","3":"0.055","4":"0.249","5":"16","6":"7.56","7":"76","8":"11.9","9":"15","_rn_":"5"},{"1":"Si","2":"0.587","3":"0.158","4":"0.678","5":"38","6":"13.50","7":"67","8":"9.4","9":"55","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -210,9 +232,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="resumen-de-los-datos" class="level2">
 <h2 class="anchored" data-anchor-id="resumen-de-los-datos">Resumen de los datos</h2>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(estudiantes), <span class="at">y =</span> prof_dr)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="TP_final_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -425,27 +456,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(<span class="fu">select</span>(df,<span class="sc">-</span>privada)),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"color"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"lower"</span>, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.cex =</span> <span class="fl">0.6</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.pos =</span> <span class="st">"lt"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Correlation Plot for Numerical Variables"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">"hclust"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(dplyr<span class="sc">::</span><span class="fu">select</span>(df, <span class="sc">-</span>privada)),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"color"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"lower"</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.cex =</span> <span class="fl">0.6</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.pos =</span> <span class="st">"lt"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Correlation Plot for Numerical Variables"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">"hclust"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="TP_final_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<p><img src="TP_final_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
-</div>
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggpairs(df)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(df, <span class="fu">aes</span>(<span class="at">colour =</span> privada, <span class="at">alpha =</span> <span class="fl">0.4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -458,22 +486,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="TP_final_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="TP_final_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Consigna I: Regresión Lineal 1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.</p>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>filas_train <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df), <span class="at">size =</span> <span class="fu">nrow</span>(df)<span class="sc">*</span><span class="fl">0.7</span>) <span class="co">#asignacion aleatoria</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df_train <span class="ot">&lt;-</span> <span class="fu">slice</span>(df, filas_train)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df_test <span class="ot">&lt;-</span> <span class="fu">slice</span>(df, <span class="sc">-</span>filas_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>filas_train <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df), <span class="at">size =</span> <span class="fu">nrow</span>(df)<span class="sc">*</span><span class="fl">0.7</span>) <span class="co">#asignacion aleatoria</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>df_train <span class="ot">&lt;-</span> <span class="fu">slice</span>(df, filas_train)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>df_test <span class="ot">&lt;-</span> <span class="fu">slice</span>(df, <span class="sc">-</span>filas_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="2" type="1">
@@ -481,10 +505,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Primer modelo con unicamente <code>cuota</code> como variable predictora</p>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> cuota, <span class="at">data =</span> df_train)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> cuota, <span class="at">data =</span> df_train)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -509,39 +533,40 @@ F-statistic: 279.4 on 1 and 541 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Segundo modelo con <code>cuota</code> y <code>top10</code> como variables predictoras</p>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> cuota <span class="sc">+</span> top10, <span class="at">data =</span> df_train)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> cuota <span class="sc">+</span> top10 <span class="sc">+</span> cuota<span class="sc">*</span>top10, <span class="at">data =</span> df_train)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = tasa_grad ~ cuota + top10, data = df_train)
+lm(formula = tasa_grad ~ cuota + top10 + cuota * top10, data = df_train)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--47.512  -7.146  -0.432   6.943  50.462 
+-47.054  -7.871  -0.285   7.113  52.186 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 39.16182    1.61030  24.320  &lt; 2e-16 ***
-cuota        1.86003    0.17371  10.708  &lt; 2e-16 ***
-top10        0.24872    0.03925   6.336 4.97e-10 ***
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 33.997311   3.043330  11.171  &lt; 2e-16 ***
+cuota        2.330176   0.292218   7.974 9.24e-15 ***
+top10        0.430303   0.098965   4.348 1.64e-05 ***
+cuota:top10 -0.014531   0.007274  -1.998   0.0462 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 13.33 on 540 degrees of freedom
-Multiple R-squared:  0.3862,    Adjusted R-squared:  0.384 
-F-statistic: 169.9 on 2 and 540 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 13.3 on 539 degrees of freedom
+Multiple R-squared:  0.3907,    Adjusted R-squared:  0.3873 
+F-statistic: 115.2 on 3 and 539 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Tercer modelo con todas las variables predictoras</p>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> ., <span class="at">data =</span> df_train)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">=</span> <span class="fu">lm</span>(<span class="at">formula =</span> tasa_grad <span class="sc">~</span> ., <span class="at">data =</span> df_train)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -571,33 +596,169 @@ Multiple R-squared:  0.4034,    Adjusted R-squared:  0.3945
 F-statistic: 45.14 on 8 and 534 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<section id="modelos-alternativos" class="level3">
+<h3 class="anchored" data-anchor-id="modelos-alternativos">Modelos alternativos</h3>
+<p>El primer modelo propuesto surge de aplicar un método de selección <em>stepwise</em>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> df_train), <span class="co">#punto de partida</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">scope =</span> <span class="fu">list</span>(<span class="at">upper =</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> ., <span class="at">data =</span> df_train)), <span class="co">#máximo modelo posible</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="st">"both"</span>, <span class="co">#método de selección</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="co">#para no imprimir resultados parciales</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> <span class="dv">2</span>, <span class="co">#penalización a emplear (2 = AIC, log(n) = BIC)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">steps =</span> <span class="dv">1000</span> <span class="co">#máximo nro de pasos</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>mod1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tasa_grad ~ cuota + top10, data = df_train)
+
+Coefficients:
+(Intercept)        cuota        top10  
+    39.1618       1.8600       0.2487  </code></pre>
+</div>
+</div>
+<p>El segundo modelo también surge de aplicar el método <em>stepwise</em> pero considerando como modelo maximal aquel con todas las interacciones de segundo orden.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> df_train), <span class="co">#punto de partida</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">scope =</span> <span class="fu">list</span>(<span class="at">upper =</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> .<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> df_train)), <span class="co">#máximo modelo posible</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="st">"both"</span>, <span class="co">#método de selección</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="co">#para no imprimir resultados parciales</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> <span class="dv">2</span>, <span class="co">#penalización a emplear (2 = AIC, log(n) = BIC)</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">steps =</span> <span class="dv">1000</span> <span class="co">#máximo nro de pasos</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>mod2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tasa_grad ~ cuota + top10 + cuota:top10, data = df_train)
+
+Coefficients:
+(Intercept)        cuota        top10  cuota:top10  
+   33.99731      2.33018      0.43030     -0.01453  </code></pre>
+</div>
+</div>
+<p>El tercer modelo surge de aplicar la técnica de mejores subconjuntos. Visto que el modelo anterior incluye tres términos (dos efectos principales y una interacción entre ellos) se elige el mejor modelo con 3 variables explicativas.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mejorsub <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(<span class="at">x =</span> tasa_grad <span class="sc">~</span> ., <span class="at">data =</span> df_train)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mejorsub)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Subset selection object
+Call: regsubsets.formula(x = tasa_grad ~ ., data = df_train)
+8 Variables  (and intercept)
+             Forced in Forced out
+privadaSi        FALSE      FALSE
+aplicaciones     FALSE      FALSE
+ingresantes      FALSE      FALSE
+estudiantes      FALSE      FALSE
+top10            FALSE      FALSE
+cuota            FALSE      FALSE
+prof_dr          FALSE      FALSE
+razon            FALSE      FALSE
+1 subsets of each size up to 8
+Selection Algorithm: exhaustive
+         privadaSi aplicaciones ingresantes estudiantes top10 cuota prof_dr
+1  ( 1 ) " "       " "          " "         " "         " "   "*"   " "    
+2  ( 1 ) " "       " "          " "         " "         "*"   "*"   " "    
+3  ( 1 ) "*"       " "          " "         " "         "*"   "*"   " "    
+4  ( 1 ) " "       "*"          " "         "*"         "*"   "*"   " "    
+5  ( 1 ) "*"       "*"          " "         "*"         "*"   "*"   " "    
+6  ( 1 ) "*"       "*"          " "         "*"         "*"   "*"   "*"    
+7  ( 1 ) "*"       "*"          "*"         "*"         "*"   "*"   "*"    
+8  ( 1 ) "*"       "*"          "*"         "*"         "*"   "*"   "*"    
+         razon
+1  ( 1 ) " "  
+2  ( 1 ) " "  
+3  ( 1 ) " "  
+4  ( 1 ) " "  
+5  ( 1 ) " "  
+6  ( 1 ) " "  
+7  ( 1 ) " "  
+8  ( 1 ) "*"  </code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> privada <span class="sc">+</span> cuota <span class="sc">+</span> top10, <span class="at">data =</span> df_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <ol start="3" type="1">
 <li>Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo “ganador”.</li>
 </ol>
 <div class="cell">
-<details class="code-fold">
+<details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sum_sq_error1 <span class="ot">=</span> <span class="fu">sum</span>(mod1<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sum_sq_error2 <span class="ot">=</span> <span class="fu">sum</span>(mod2<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sum_sq_error3 <span class="ot">=</span> <span class="fu">sum</span>(mod3<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mod1_CME <span class="ot">=</span> sum_sq_error1<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>mod1_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod1<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod1)))<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>mod1_Cp <span class="ot">=</span> sum_sq_error1 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod1)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>mod1_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod1)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>mod1_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod1)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>mod2_CME <span class="ot">=</span> sum_sq_error2<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>mod2_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod2<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod2)))<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>mod2_Cp <span class="ot">=</span> sum_sq_error2 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod2)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>mod2_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod2)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>mod2_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod2)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>mod3_CME <span class="ot">=</span> sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>mod3_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod3<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod3)))<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>mod3_Cp <span class="ot">=</span> sum_sq_error3 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod3)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>mod3_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod3)</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>mod3_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sum_sq_error1 <span class="ot">=</span> <span class="fu">sum</span>(mod1<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sum_sq_error2 <span class="ot">=</span> <span class="fu">sum</span>(mod2<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sum_sq_error3 <span class="ot">=</span> <span class="fu">sum</span>(mod3<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>mod1_CME <span class="ot">=</span> sum_sq_error1<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>mod1_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod1<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod1)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>mod1_Cp <span class="ot">=</span> sum_sq_error1 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod1)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>mod1_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod1)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>mod1_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod1)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>mod2_CME <span class="ot">=</span> sum_sq_error2<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>mod2_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod2<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod2)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>mod2_Cp <span class="ot">=</span> sum_sq_error2 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod2)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>mod2_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod2)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>mod2_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod2)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>mod3_CME <span class="ot">=</span> sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>mod3_PRESS <span class="ot">=</span> <span class="fu">sum</span>((mod3<span class="sc">$</span>residuals<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">hatvalues</span>(mod3)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>mod3_Cp <span class="ot">=</span> sum_sq_error3 <span class="sc">/</span> (sum_sq_error3<span class="sc">/</span>(<span class="fu">nrow</span>(df_train)<span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">length</span>(<span class="fu">coefficients</span>(mod3)) <span class="sc">-</span><span class="fu">nrow</span>(df_train)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>mod3_AIC <span class="ot">=</span> <span class="fu">AIC</span>(mod3)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>mod3_BIC <span class="ot">=</span> <span class="fu">BIC</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>CME <span class="ot">&lt;-</span> <span class="cf">function</span>(mod) { </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  SSE <span class="ot">&lt;-</span> <span class="fu">sum</span>(mod<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(mod<span class="sc">$</span>fitted.values)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  SSE <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>) </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>PRESS <span class="ot">&lt;-</span> <span class="cf">function</span>(mod) {</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>( ( mod<span class="sc">$</span>residuals <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">hatvalues</span>(mod)) )<span class="sc">^</span><span class="dv">2</span> )</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>Cp <span class="ot">&lt;-</span> <span class="cf">function</span>(mod) { </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  SSE <span class="ot">&lt;-</span> <span class="fu">sum</span>(mod<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  mod_max <span class="ot">&lt;-</span> <span class="fu">lm</span>(tasa_grad <span class="sc">~</span> .<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> df_train)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  SSE_max <span class="ot">&lt;-</span> <span class="fu">sum</span>(mod_max<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>) </span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(mod<span class="sc">$</span>fitted.values)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(mod<span class="sc">$</span>coefficients)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  SSE <span class="sc">/</span> (SSE_max <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>p <span class="sc">-</span> n</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>metricas <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">CME   =</span> <span class="fu">c</span>( <span class="fu">CME</span>(mod1),   <span class="fu">CME</span>(mod2),   <span class="fu">CME</span>(mod3) ),</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">PRESS =</span> <span class="fu">c</span>( <span class="fu">PRESS</span>(mod1), <span class="fu">PRESS</span>(mod2), <span class="fu">PRESS</span>(mod3) ),</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">Cp    =</span> <span class="fu">c</span>( <span class="fu">Cp</span>(mod1),    <span class="fu">Cp</span>(mod2),    <span class="fu">Cp</span>(mod3) ),</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC   =</span> <span class="fu">c</span>( <span class="fu">AIC</span>(mod1),   <span class="fu">AIC</span>(mod2),   <span class="fu">AIC</span>(mod3) ),</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC   =</span> <span class="fu">c</span>( <span class="fu">BIC</span>(mod1),   <span class="fu">BIC</span>(mod2),   <span class="fu">BIC</span>(mod3) )</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>metricas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["CME"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["PRESS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Cp"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AIC.1"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"177.1570","2":"96972.46","3":"92.92821","4":"4359.097","5":"4376.286"},{"1":"175.8549","2":"96567.48","3":"90.29824","4":"4357.091","5":"4378.577"},{"1":"176.6482","2":"97082.87","3":"93.11895","4":"4359.535","5":"4381.021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 <ol start="4" type="1">
 <li><p>Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.</p></li>
@@ -609,12 +770,154 @@ F-statistic: 45.14 on 8 and 534 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li><p>Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.</p></li>
 </ol>
 <p>Consigna III: Regresión Logística 1. Sobre el conjunto de datos original, definir la variable respuesta: (0 si tasa_gradi &lt; 0.75) (1 si tasa_gradi ≥ 0.75)</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">tasa_grad_binaria =</span> <span class="fu">if_else</span>(tasa_grad <span class="sc">&lt;</span> <span class="dv">75</span>, F, T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <ol start="2" type="1">
-<li><p>Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función createDataPartition() del paquete caret para asegurarse que la proporción de éxitos en cada partición sea balanceada.</p></li>
-<li><p>Ajustar un modelo de regresión logística para estudiar la variable binaria definida en el punto 1. Este modelo debe incluir todas las explicativas disponibles, a excepción de la variable tasa_grad original. En base al resultado obtenido, interpretar las razones de odds asociadas a predictores estadísticamente significativos al 5%.</p></li>
-<li><p>Elegir el punto de corte óptimo para clasificación mediante el método de la curva ROC.</p></li>
-<li><p>Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.</p></li>
+<li>Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función <code>createDataPartition()</code> del paquete <code>caret</code> para asegurarse que la proporción de éxitos en cada partición sea balanceada.</li>
 </ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1492</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>particion_logreg <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(df<span class="sc">$</span>tasa_grad_binaria, <span class="at">p =</span> <span class="fl">0.7</span>, <span class="at">list =</span> F)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>logreg_train <span class="ot">&lt;-</span> df[particion_logreg,]</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>logreg_test <span class="ot">&lt;-</span> df[<span class="sc">-</span>particion_logreg,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="3" type="1">
+<li>Ajustar un modelo de regresión logística para estudiar la variable binaria definida en el punto 1. Este modelo debe incluir todas las explicativas disponibles, a excepción de la variable tasa_grad original. En base al resultado obtenido, interpretar las razones de odds asociadas a predictores estadísticamente significativos al 5%.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>logreg_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  tasa_grad_binaria <span class="sc">~</span> privada <span class="sc">+</span> aplicaciones <span class="sc">+</span> ingresantes <span class="sc">+</span> estudiantes <span class="sc">+</span> top10 <span class="sc">+</span> cuota <span class="sc">+</span> prof_dr <span class="sc">+</span> razon, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> logreg_train</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logreg_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = tasa_grad_binaria ~ privada + aplicaciones + ingresantes + 
+    estudiantes + top10 + cuota + prof_dr + razon, family = binomial(link = "logit"), 
+    data = logreg_train)
+
+Coefficients:
+               Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -4.1625097  0.9516771  -4.374 1.22e-05 ***
+privadaSi     0.1911998  0.4721906   0.405   0.6855    
+aplicaciones  0.1508995  0.0751209   2.009   0.0446 *  
+ingresantes   0.8752909  0.6650412   1.316   0.1881    
+estudiantes  -0.3377068  0.1429975  -2.362   0.0182 *  
+top10         0.0206241  0.0086945   2.372   0.0177 *  
+cuota         0.2008847  0.0457842   4.388 1.15e-05 ***
+prof_dr       0.0005592  0.0093520   0.060   0.9523    
+razon         0.0266573  0.0362013   0.736   0.4615    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 673.29  on 544  degrees of freedom
+Residual deviance: 526.96  on 536  degrees of freedom
+AIC: 544.96
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(logreg_mod<span class="sc">$</span>coefficients[<span class="dv">5</span><span class="sc">:</span><span class="dv">7</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>estudiantes       top10       cuota 
+  0.7134045   1.0208383   1.2224839 </code></pre>
+</div>
+</div>
+<ul>
+<li>Ante un aumento de mil estudiantes en carreras de grado, la chance de que una universidad tenga una buena tasa de graduación disminuye en un 29%.</li>
+<li>Ante un aumento en una unidad porcentual del porcentaje de ingresantes que fueron parte del top 10% de estudiantes en sus escuelas secundarias, la chance de que una universidad tenga una buena tasa se graduación aumenta en un 2%.</li>
+<li>Ante un aumento de mil dólares en la cuota, la chance de que una universidad tenga una buena tasa de graduación aumenta en un 22%.</li>
+</ul>
+<ol start="4" type="1">
+<li>Elegir el punto de corte óptimo para clasificación mediante el método de la curva ROC.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>curvaROC <span class="ot">&lt;-</span> <span class="fu">roc</span>(</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> logreg_train<span class="sc">$</span>tasa_grad_binaria,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictor =</span> <span class="fu">fitted.values</span>(logreg_mod),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">quiet =</span> <span class="cn">TRUE</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(curvaROC, <span class="at">print.auc =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="TP_final_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> pROC<span class="sc">::</span><span class="fu">coords</span>(curvaROC, <span class="st">"best"</span>, <span class="at">ret =</span> <span class="st">"threshold"</span>)[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="5" type="1">
+<li>Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>p_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(logreg_mod, logreg_test)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>observados <span class="ot">&lt;-</span> logreg_test <span class="sc">%&gt;%</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">if_else</span>(tasa_grad_binaria, <span class="st">"Buena tasa"</span>, <span class="st">"Mala tasa"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(y) <span class="sc">%&gt;%</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Mala tasa"</span>, <span class="st">"Buena tasa"</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>predichos <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(p_hat <span class="sc">&gt;=</span> threshold, <span class="st">"Buena tasa"</span>, <span class="st">"Mala tasa"</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Mala tasa"</span>, <span class="st">"Buena tasa"</span>))</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> predichos, <span class="at">reference =</span> observados, <span class="at">positive =</span> <span class="st">"Buena tasa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+            Reference
+Prediction   Mala tasa Buena tasa
+  Mala tasa        152         44
+  Buena tasa         9         27
+                                          
+               Accuracy : 0.7716          
+                 95% CI : (0.7121, 0.8239)
+    No Information Rate : 0.694           
+    P-Value [Acc &gt; NIR] : 0.005386        
+                                          
+                  Kappa : 0.3762          
+                                          
+ Mcnemar's Test P-Value : 3.008e-06       
+                                          
+            Sensitivity : 0.3803          
+            Specificity : 0.9441          
+         Pos Pred Value : 0.7500          
+         Neg Pred Value : 0.7755          
+             Prevalence : 0.3060          
+         Detection Rate : 0.1164          
+   Detection Prevalence : 0.1552          
+      Balanced Accuracy : 0.6622          
+                                          
+       'Positive' Class : Buena tasa      
+                                          </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Precisión:</strong> El modelo clasifica correctamente al 77% de las universidades del conjunto de prueba según si tienen o no una buena tasa de graduación.</li>
+<li><strong>Sensibilidad:</strong> Entre las universidades con buena tasa de graduación, sólo un 38% de ellas fueron clasificadas correctamente.</li>
+<li><strong>Especificidad:</strong> Entre las universidades con mala tasa de graduación, un 94% fueron clasificadas correctamente.</li>
+<li><strong>VPP:</strong> Cuando el modelo predice que una universidad tiene una buena tasa de graduación, acierta un 75% de las veces.</li>
+<li><strong>VPN:</strong> Cuando el modelo predice que una universidad tiene una mala tasa de graduación, acierta un 78% de las veces.</li>
+<li><strong>Kappa:</strong> La capacidad predictiva del modelo propuesto es aceptable.</li>
+</ul>
+</section>
 </section>
 
 </main>
@@ -698,27 +1001,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -728,17 +1014,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -750,130 +1027,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -917,7 +1071,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -943,32 +1096,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1029,7 +1156,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

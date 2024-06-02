@@ -19,17 +19,17 @@ editor: visual
 
 Se nos presenta una base de datos sobre universidades publicas y privadas con las siguientes variables
 
-|Variable| Descripción
--------------------|------------------------------------------------------
-|`privada`| indica si la universidad es privada o no.
-|`aplicaciones`| cantidad de aplicaciones recibidas por la universidad durante el último año (cada estudiante que aspira a ingresar debe presentar una aplicación formal, a partir de la cual es admitido/a o rechazado/a), medida en miles de personas.
-|`ingresantes`| cantidad de aplicaciones aceptadas, medida en miles de personas.
-|`estudiantes`| cantidad total de estudiantes en carreras de grado, medida en miles de personas.
-|`top10`| porcentaje de ingresantes que fueron parte del 10% de estudiantes con mejores calificaciones en sus respectivas escuelas secundarias.
-|`cuota`| costo de la cuota de la universidad, medida en miles de dólares.
-|`prof_dr`| porcentaje de profesores de la universidad que poseen título de doctorado.
-|`razon`| tasa de estudiantes por profesor.
-|`tasa_grad`| porcentaje de estudiantes que se gradúan.
+| Variable       | Descripción                                                                                                                                                                                                                             |
+|-------------------|----------------------------------------------------|
+| `privada`      | indica si la universidad es privada o no.                                                                                                                                                                                               |
+| `aplicaciones` | cantidad de aplicaciones recibidas por la universidad durante el último año (cada estudiante que aspira a ingresar debe presentar una aplicación formal, a partir de la cual es admitido/a o rechazado/a), medida en miles de personas. |
+| `ingresantes`  | cantidad de aplicaciones aceptadas, medida en miles de personas.                                                                                                                                                                        |
+| `estudiantes`  | cantidad total de estudiantes en carreras de grado, medida en miles de personas.                                                                                                                                                        |
+| `top10`        | porcentaje de ingresantes que fueron parte del 10% de estudiantes con mejores calificaciones en sus respectivas escuelas secundarias.                                                                                                   |
+| `cuota`        | costo de la cuota de la universidad, medida en miles de dólares.                                                                                                                                                                        |
+| `prof_dr`      | porcentaje de profesores de la universidad que poseen título de doctorado.                                                                                                                                                              |
+| `razon`        | tasa de estudiantes por profesor.                                                                                                                                                                                                       |
+| `tasa_grad`    | porcentaje de estudiantes que se gradúan.                                                                                                                                                                                               |
 
 La variable de interés es `tasa_grad` que indica el porcentaje de estudiantes que se gradúan
 
@@ -39,11 +39,14 @@ A continuacion se importan las librerias que utilizaremos y se lee la funte de l
 #| message: FALSE
 library(tidyverse)
 library(ggplot2)
+library(MASS)
 library(GGally)
 library(caret)
 library(corrplot)
 library(janitor)
 library(knitr)
+library(leaps)
+library(pROC)
 ```
 
 ```{r}
@@ -51,21 +54,26 @@ df = read.delim('1-data/universidades.txt')
 df = df %>% 
   mutate(privada = factor(privada))
 
-categoricals_vars <- df %>%
-  select(where(is.factor)) %>%
-  names()
+# categoricals_vars <- df %>%
+#   select(where(is.factor)) %>%
+#   names()
 
-continuous_vars <- df %>%
-  select(where(is.numeric)) %>%
-  names()
+# continuous_vars <- df %>%
+#   select(where(is.numeric)) %>%
+#   names()
+
 head(df)
 ```
 
 ## Resumen de los datos
 
 ```{r}
+df %>% ggplot(aes(x = log(estudiantes), y = prof_dr)) + geom_point()
+```
+
+```{r}
 skimr::skim(df)
-corrplot(cor(select(df,-privada)),
+corrplot(cor(dplyr::select(df, -privada)),
          method = "color",
          type = "lower", 
          tl.cex = 0.6,
@@ -73,13 +81,11 @@ corrplot(cor(select(df,-privada)),
          title = "Correlation Plot for Numerical Variables",
          order = "hclust",
          mar = c(0, 0, 2, 0))
-ggpairs(df)
+#ggpairs(df)
+ggpairs(df, aes(colour = privada, alpha = 0.4))
 ```
 
-
-
-Consigna I: Regresión Lineal
-1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.
+Consigna I: Regresión Lineal 1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.
 
 ```{r}
 set.seed(1234)
@@ -89,22 +95,19 @@ df_train <- slice(df, filas_train)
 df_test <- slice(df, -filas_train)
 ```
 
-
-
-
-
-2. Ajustar tres modelos diferentes de Regresión Lineal Múltiple con el método de los Mínimos Cuadrados Ordinarios (MCO), definiendo como variable respuesta a la tasa de graduación de cada universidad. Se debe justificar por qué se eligieron a esos tres modelos en particular (ejemplo: procesos automáticos, técnica del mejor subconjunto, criterios propios, etc.).
+2.  Ajustar tres modelos diferentes de Regresión Lineal Múltiple con el método de los Mínimos Cuadrados Ordinarios (MCO), definiendo como variable respuesta a la tasa de graduación de cada universidad. Se debe justificar por qué se eligieron a esos tres modelos en particular (ejemplo: procesos automáticos, técnica del mejor subconjunto, criterios propios, etc.).
 
 Primer modelo con unicamente `cuota` como variable predictora
+
 ```{r}
 mod1 = lm(formula = tasa_grad ~ cuota, data = df_train)
 summary(mod1)
 ```
 
-
 Segundo modelo con `cuota` y `top10` como variables predictoras
+
 ```{r}
-mod2 = lm(formula = tasa_grad ~ cuota + top10, data = df_train)
+mod2 = lm(formula = tasa_grad ~ cuota + top10 + cuota*top10, data = df_train)
 summary(mod2)
 ```
 
@@ -115,8 +118,48 @@ mod3 = lm(formula = tasa_grad ~ ., data = df_train)
 summary(mod3)
 ```
 
+### Modelos alternativos
 
-3. Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo “ganador”.
+El primer modelo propuesto surge de aplicar un método de selección *stepwise*.
+
+```{r}
+mod1 <- stepAIC(
+  object = lm(tasa_grad ~ 1, data = df_train), #punto de partida
+  scope = list(upper = lm(tasa_grad ~ ., data = df_train)), #máximo modelo posible
+  direction = "both", #método de selección
+  trace = FALSE, #para no imprimir resultados parciales
+  k = 2, #penalización a emplear (2 = AIC, log(n) = BIC)
+  steps = 1000 #máximo nro de pasos
+)
+mod1
+```
+
+El segundo modelo también surge de aplicar el método *stepwise* pero considerando como modelo maximal aquel con todas las interacciones de segundo orden.
+
+```{r}
+mod2 <- stepAIC(
+  object = lm(tasa_grad ~ 1, data = df_train), #punto de partida
+  scope = list(upper = lm(tasa_grad ~ .^2, data = df_train)), #máximo modelo posible
+  direction = "both", #método de selección
+  trace = FALSE, #para no imprimir resultados parciales
+  k = 2, #penalización a emplear (2 = AIC, log(n) = BIC)
+  steps = 1000 #máximo nro de pasos
+)
+mod2
+```
+
+El tercer modelo surge de aplicar la técnica de mejores subconjuntos. Visto que el modelo anterior incluye tres términos (dos efectos principales y una interacción entre ellos) se elige el mejor modelo con 3 variables explicativas.
+
+```{r}
+mejorsub <- regsubsets(x = tasa_grad ~ ., data = df_train)
+summary(mejorsub)
+```
+
+```{r}
+mod3 <- lm(tasa_grad ~ privada + cuota + top10, data = df_train)
+```
+
+3.  Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo "ganador".
 
 ```{r}
 sum_sq_error1 = sum(mod1$residuals^2)
@@ -139,93 +182,103 @@ mod3_PRESS = sum((mod3$residuals/(1-hatvalues(mod3)))^2)
 mod3_Cp = sum_sq_error3 / (sum_sq_error3/(nrow(df_train)-1)) + 2*length(coefficients(mod3)) -nrow(df_train)
 mod3_AIC = AIC(mod3)
 mod3_BIC = BIC(mod3)
-
-
 ```
 
-
-
-
-
-4. Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.
-
-
-
-
-5. Consierando el modelo elegido, interpretar en palabras del problema los efectos estimados de los predictores sobre la respuesta, incluida su significación estadística (resultados del test t).
-
-
-
-
-
-
-Consigna II: Regularización y Predicción
-1. Ajustar el modelo elegido en la etapa anterior mediante la técnica Ridge, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
-
-
-
-
-
-
-2. Ajustar el modelo elegido en la etapa anterior mediante la técnica Lasso, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
-
-
-
-
-
-
-
-
-
-
-
-
-3. Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Consigna III: Regresión Logística
-1. Sobre el conjunto de datos original, definir la variable respuesta:
-(0 si tasa_gradi < 0.75)
-(1 si tasa_gradi ≥ 0.75)
-
-
-
-
-
-2. Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función createDataPartition() del paquete caret para asegurarse que la proporción de éxitos en cada partición sea balanceada.
-
-
-
-
-
-
-3. Ajustar un modelo de regresión logística para estudiar la variable binaria definida en el punto 1. Este modelo debe incluir todas las explicativas disponibles, a excepción de la variable tasa_grad original. En base al resultado obtenido, interpretar las razones de odds asociadas a predictores estadísticamente significativos al 5%.
-
-
-
-
-
-
-
-
-
-4. Elegir el punto de corte óptimo para clasificación mediante el método de la curva ROC.
-
-
-
-
-
-
-
-5. Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.
+```{r}
+CME <- function(mod) { 
+  SSE <- sum(mod$residuals^2)
+  n <- length(mod$fitted.values)
+  SSE / (n - 1) 
+}
+PRESS <- function(mod) {
+  sum( ( mod$residuals / (1 - hatvalues(mod)) )^2 )
+}
+Cp <- function(mod) { 
+  SSE <- sum(mod$residuals^2)
+  mod_max <- lm(tasa_grad ~ .^2, data = df_train)
+  SSE_max <- sum(mod_max$residuals^2) 
+  n <- length(mod$fitted.values)
+  p <- length(mod$coefficients)
+  SSE / (SSE_max / (n - 1)) + 2*p - n
+}
+
+metricas <- data.frame(
+  CME   = c( CME(mod1),   CME(mod2),   CME(mod3) ),
+  PRESS = c( PRESS(mod1), PRESS(mod2), PRESS(mod3) ),
+  Cp    = c( Cp(mod1),    Cp(mod2),    Cp(mod3) ),
+  AIC   = c( AIC(mod1),   AIC(mod2),   AIC(mod3) ),
+  AIC   = c( BIC(mod1),   BIC(mod2),   BIC(mod3) )
+)
+metricas
+```
+
+4.  Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.
+
+5.  Consierando el modelo elegido, interpretar en palabras del problema los efectos estimados de los predictores sobre la respuesta, incluida su significación estadística (resultados del test t).
+
+Consigna II: Regularización y Predicción 1. Ajustar el modelo elegido en la etapa anterior mediante la técnica Ridge, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
+
+2.  Ajustar el modelo elegido en la etapa anterior mediante la técnica Lasso, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
+
+3.  Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.
+
+Consigna III: Regresión Logística 1. Sobre el conjunto de datos original, definir la variable respuesta: (0 si tasa_gradi \< 0.75) (1 si tasa_gradi ≥ 0.75)
+
+```{r}
+df <- df %>% mutate(tasa_grad_binaria = if_else(tasa_grad < 75, F, T))
+```
+
+2.  Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función `createDataPartition()` del paquete `caret` para asegurarse que la proporción de éxitos en cada partición sea balanceada.
+
+```{r}
+set.seed(1492)
+particion_logreg <- createDataPartition(df$tasa_grad_binaria, p = 0.7, list = F)
+logreg_train <- df[particion_logreg,]
+logreg_test <- df[-particion_logreg,]
+```
+
+3.  Ajustar un modelo de regresión logística para estudiar la variable binaria definida en el punto 1. Este modelo debe incluir todas las explicativas disponibles, a excepción de la variable tasa_grad original. En base al resultado obtenido, interpretar las razones de odds asociadas a predictores estadísticamente significativos al 5%.
+
+```{r}
+logreg_mod <- glm(
+  tasa_grad_binaria ~ privada + aplicaciones + ingresantes + estudiantes + top10 + cuota + prof_dr + razon, 
+  family = binomial(link = "logit"), data = logreg_train
+)
+summary(logreg_mod)
+```
+```{r}
+exp(logreg_mod$coefficients[5:7])
+```
+
+* Ante un aumento de mil estudiantes en carreras de grado, la chance de que una universidad tenga una buena tasa de graduación disminuye en un 29\%.
+* Ante un aumento en una unidad porcentual del porcentaje de ingresantes que fueron parte del top 10\% de estudiantes en sus escuelas secundarias, la chance de que una universidad tenga una buena tasa se graduación aumenta en un 2\%.
+* Ante un aumento de mil dólares en la cuota, la chance de que una universidad tenga una buena tasa de graduación aumenta en un 22\%.
+
+4.  Elegir el punto de corte óptimo para clasificación mediante el método de la curva ROC.
+
+```{r}
+curvaROC <- roc(
+  response = logreg_train$tasa_grad_binaria,
+  predictor = fitted.values(logreg_mod),
+  quiet = TRUE
+)
+plot(curvaROC, print.auc = TRUE)
+threshold <- pROC::coords(curvaROC, "best", ret = "threshold")[1,]
+```
+
+5.  Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.
+
+```{r}
+p_hat <- predict(logreg_mod, logreg_test)
+observados <- logreg_test %>% 
+  mutate(y = if_else(tasa_grad_binaria, "Buena tasa", "Mala tasa")) %>% 
+  pull(y) %>% factor(levels = c("Mala tasa", "Buena tasa"))
+predichos <- factor(ifelse(p_hat >= threshold, "Buena tasa", "Mala tasa"), levels = c("Mala tasa", "Buena tasa"))
+confusionMatrix(data = predichos, reference = observados, positive = "Buena tasa")
+```
+* **Precisión:** El modelo clasifica correctamente al 77\% de las universidades del conjunto de prueba según si tienen o no una buena tasa de graduación.
+* **Sensibilidad:** Entre las universidades con buena tasa de graduación, sólo un 38\% de ellas fueron clasificadas correctamente.
+* **Especificidad:** Entre las universidades con mala tasa de graduación, un 94\% fueron clasificadas correctamente.
+* **VPP:** Cuando el modelo predice que una universidad tiene una buena tasa de graduación, acierta un 75\% de las veces.
+* **VPN:** Cuando el modelo predice que una universidad tiene una mala tasa de graduación, acierta un 78\% de las veces.
+* **Kappa:** La capacidad predictiva del modelo propuesto es aceptable.
