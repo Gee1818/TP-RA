@@ -72,8 +72,10 @@ skimr::skim(df)
 corrplot(cor(dplyr::select(df, -privada)),
          method = "color",
          type = "lower", 
+         addCoef.col = "black",
          tl.cex = 0.6,
-         tl.pos = "lt",
+         tl.pos = "ld",
+         tl.srt = 45,
          title = "Correlation Plot for Numerical Variables",
          order = "hclust",
          mar = c(0, 0, 2, 0))
@@ -203,12 +205,140 @@ metricas <- data.frame(
   PRESS = c( PRESS(mod1), PRESS(mod2), PRESS(mod3) ),
   Cp    = c( Cp(mod1),    Cp(mod2),    Cp(mod3) ),
   AIC   = c( AIC(mod1),   AIC(mod2),   AIC(mod3) ),
-  AIC   = c( BIC(mod1),   BIC(mod2),   BIC(mod3) )
+  BIC   = c( BIC(mod1),   BIC(mod2),   BIC(mod3) )
 )
 metricas
 ```
 
 4.  Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.
+
+```{r}
+sel_mod = mod3
+
+diagnostico = broom::augment(sel_mod)
+```
+
+Plot de los residuos
+```{r}
+
+ggplot(data = diagnostico) + 
+    aes(x = .fitted, y = .resid) + 
+    geom_point(alpha = 0.6) +
+    geom_hline(aes(yintercept = 0, color = "red")) +
+    xlab("Valores Ajustados") +
+    ylab("Residuos") +
+    theme_bw()+
+    theme(legend.position = "none",
+      axis.title = element_text(face = "bold"))
+```
+
+Test sobre los residuos
+```{r}
+lmtest::bptest(sel_mod)
+```
+Como el p-value resulta inferior al nivel de significación 5%, se rechaza la hipótesis nula, indicando que posiblemente no se esté cumpliendo el supuesto de homocedasticidad, tal como sospechábamos.
+
+Residuos estandarizados
+```{r}
+diagnostico$id <- seq(1:nrow(diagnostico))
+
+ggplot(data = diagnostico) +
+  aes(x = id, y = .std.resid) + 
+  geom_point(alpha = 0.6) +
+  geom_hline(aes(yintercept = 0, color = "red")) +
+  geom_hline(aes(yintercept = -3, color = "red")) +
+  geom_hline(aes(yintercept = 3, color = "red")) +
+  xlab("Observación") +
+  ylab("Residuos estandarizados") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(face = "bold"))
+
+```
+
+Residuos studentizados
+```{r}
+diagnostico$.stu.resid <- rstudent(sel_mod)
+
+ggplot(data = diagnostico) + 
+  aes(x = id, y = .stu.resid) + 
+  geom_point(alpha = 0.6) +
+  geom_hline(aes(yintercept = 0, color = "red")) +
+  geom_hline(aes(yintercept = -3, color = "red")) +
+  geom_hline(aes(yintercept = 3, color = "red")) +
+  xlab("Observación") +
+  ylab("Residuos estudentizados") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(face = "bold"))
+```
+
+Residuos PRESS
+```{r}
+diagnostico$press <- qpcR::PRESS(sel_mod, verbose=FALSE)$residuals
+
+ggplot(data = diagnostico) + 
+  aes(x = id, y = press) + 
+  geom_bar(stat="identity")+
+  geom_hline(aes(yintercept = 0, color = "red")) +
+  xlab("Observación") +
+  ylab("PRESS") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(face = "bold"))
+```
+
+Analisis de normalidad
+```{r}
+plot(sel_mod,2)
+
+nortest::ad.test(sel_mod$residuals)
+```
+
+Dado que el p-value es inferior al nivel de significación del 5%, se rechaza la hipótesis nula de distribución Normal para los errores, y este supuesto parece no ser aceptable para este caso.
+
+
+Analisis DFBETAS para encontrar outliers
+```{r}
+# Calculate DFBETAS
+dfbetas_values <- dfbetas(sel_mod)
+
+# Convert DFBETAS to a data frame for plotting
+dfbetas_data <- as.data.frame(dfbetas_values)
+dfbetas_data$Observation <- 1:nrow(dfbetas_data)
+
+# Melt the data frame for ggplot2
+
+dfbetas_melted <- reshape2::melt(dfbetas_data, id.vars = "Observation")
+
+# Plot DFBETAS for each coefficient
+ggplot(dfbetas_melted, aes(x = Observation, y = value, color = variable)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = c(-1, 1), color = "red", linetype = "dashed") +
+  facet_wrap(~ variable, scales = "free_y") +
+  xlab("Observation") +
+  ylab("DFBETAS") +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.title = element_text(face = "bold"),
+    strip.text = element_text(face = "bold")
+  )
+```
+
+
+Estudio de colinealidad
+```{r}
+car::vif(sel_mod)
+
+X = model.matrix(sel_mod)
+
+autovalues = eigen(t(X) %*% X)$values
+
+max(autovalues)/autovalues
+
+```
+
 
 5.  Consierando el modelo elegido, interpretar en palabras del problema los efectos estimados de los predictores sobre la respuesta, incluida su significación estadística (resultados del test t).
 
