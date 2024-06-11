@@ -53,7 +53,7 @@ library(glmnet)
 ```{r}
 df = read.delim('1-data/universidades.txt')
 df = df %>% 
-  mutate(privada = factor(privada))
+  mutate(privada = ifelse(privada == "Si", TRUE, FALSE))
 
 # categoricals_vars <- df %>%
 #   select(where(is.factor)) %>%
@@ -81,7 +81,7 @@ corrplot(cor(dplyr::select(df, -privada)),
          order = "hclust",
          mar = c(0, 0, 2, 0))
 #ggpairs(df)
-ggpairs(df, aes(colour = privada, alpha = 0.4))
+#ggpairs(df, aes(colour = privada, alpha = 0.4))
 ```
 
 ```{r}
@@ -360,7 +360,7 @@ Consigna II: Regularización y Predicción 1. Ajustar el modelo elegido en la et
 set.seed(12343)
 
 X_train = df_train %>% 
-  dplyr::select(cuota, top10) %>% 
+  dplyr::select(predictors(sel_mod)) %>% 
   as.matrix()
 
 Y_train = df_train$tasa_grad
@@ -368,12 +368,13 @@ Y_train = df_train$tasa_grad
 mod_ridge = train(
   x = X_train, y= Y_train,
   method = "glmnet",
-  tuneGrid = expand.grid(alpha = 0, lambda = seq(2,5,by = 0.2)),
-  metric = "Rsquared",
+  tuneGrid = expand.grid(alpha = 0, lambda = seq(0,1,by = 0.2)),
+  metric = "RMSE",
   trControl = trainControl(method = "repeatedcv", number = 5, repeats = 5)
 )
 
 mod_ridge$bestTune[[2]]
+
 ```
 
 
@@ -384,7 +385,7 @@ mod_lasso = train(
   x = X_train, y= Y_train,
   method = "glmnet",
   tuneGrid = expand.grid(alpha = 1, lambda = seq(0,0.5,by = 0.02)),
-  metric = "Rsquared",
+  metric = "RMSE",
   trControl = trainControl(method = "repeatedcv", number = 5, repeats = 5)
 )
 
@@ -393,6 +394,29 @@ mod_lasso$bestTune[[2]]
 
 
 3.  Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.
+
+```{r}
+pred_MCO = predict(sel_mod, newdata = df_test)
+
+X_test = df_test %>% 
+  dplyr::select(predictors(sel_mod)) %>% 
+  as.matrix()
+
+Y_test = df_test$tasa_grad
+
+pred_ridge = predict(mod_ridge, newdata = X_test)
+
+pred_lasso = predict(mod_lasso, newdata = X_test)
+
+rmse_MCO = sqrt(mean((pred_MCO - Y_test)^2))
+rmse_ridge = sqrt(mean((pred_ridge - Y_test)^2))
+rmse_lasso = sqrt(mean((pred_lasso - Y_test)^2))
+
+results = tibble(rmse_MCO,rmse_ridge,rmse_lasso)
+results
+
+```
+
 
 Consigna III: Regresión Logística 1. Sobre el conjunto de datos original, definir la variable respuesta: (0 si tasa_gradi \< 0.75) (1 si tasa_gradi ≥ 0.75)
 
