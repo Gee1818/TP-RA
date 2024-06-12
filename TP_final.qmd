@@ -15,12 +15,12 @@ format:
 editor: visual
 ---
 
-## Introduccion
+# Introduccion
 
 Se nos presenta una base de datos sobre universidades publicas y privadas con las siguientes variables
 
 | Variable       | Descripción                                                                                                                                                                                                                             |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | `privada`      | indica si la universidad es privada o no.                                                                                                                                                                                               |
 | `aplicaciones` | cantidad de aplicaciones recibidas por la universidad durante el último año (cada estudiante que aspira a ingresar debe presentar una aplicación formal, a partir de la cual es admitido/a o rechazado/a), medida en miles de personas. |
 | `ingresantes`  | cantidad de aplicaciones aceptadas, medida en miles de personas.                                                                                                                                                                        |
@@ -66,7 +66,7 @@ df = df %>%
 head(df)
 ```
 
-## Resumen de los datos
+# Resumen de los datos
 
 ```{r}
 skimr::skim(df)
@@ -84,15 +84,189 @@ corrplot(cor(dplyr::select(df, -privada)),
 #ggpairs(df, aes(colour = privada, alpha = 0.4))
 ```
 
+## Privada
 ```{r}
-ggplot(df, aes(x = cuota, y = log(tasa_grad), color = privada)) +
+ggplot(df, aes(x = privada, fill = privada))+
+  geom_bar() + 
+  labs(title = "Cantidad de alumnos por tipo de universidad",
+       x = "Tipo",
+       y = "Cant. alumnos")+
+  theme_minimal()
+```
+
+```{r}
+ggplot(df) +
+  aes(x = tasa_grad) + 
+  geom_histogram(na.rm = TRUE, bins = 12, color = "black", aes(fill = privada)) + 
+  facet_wrap(~ privada) + 
+  theme(legend.position = "bottom")+
+  theme_minimal()
+```
+
+## Cuota
+
+```{r}
+ggplot(df, aes(cuota))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de cuota",
+       x = "Cuota")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+ggplot(df, aes(x = cuota, y = tasa_grad, color = privada)) +
   geom_point() + 
-  geom_smooth(method = "lm", se = FALSE)+
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
   labs(title = "Cuota vs Tasa de graduados",
        x = "Cuota",
        y = "% de graduados")+
   theme_minimal()
 ```
+## Aplicaciones
+
+```{r}
+ggplot(df, aes(aplicaciones))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de aplicaciones",
+       x = "aplicaciones")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(df, aes(x = aplicaciones, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "aplicaciones vs Tasa de graduados",
+       x = "aplicaciones",
+       y = "% de graduados")+
+  theme_minimal()
+```
+
+## Ingresantes
+```{r}
+ggplot(df, aes(ingresantes))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de ingresantes",
+       x = "ingresantes")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+ggplot(df, aes(x = ingresantes, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "ingresantes vs Tasa de graduados",
+       x = "ingresantes",
+       y = "% de graduados")+
+  theme_minimal()
+```
+
+
+## Estudiantes
+```{r}
+ggplot(df, aes(estudiantes))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de estudiantes",
+       x = "estudiantes")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+ggplot(df, aes(x = estudiantes, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "estudiantes vs Tasa de graduados",
+       x = "estudiantes",
+       y = "% de graduados")+
+  theme_minimal()
+```
+## Top 10
+```{r}
+ggplot(df, aes(top10))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de top10",
+       x = "top10")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+ggplot(df, aes(x = top10, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "top10 vs Tasa de graduados",
+       x = "top10",
+       y = "% de graduados")+
+  theme_minimal()
+```
+## Profesores con doctorado
+```{r}
+ggplot(df, aes(prof_dr))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de prof_dr",
+       x = "prof_dr")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+ggplot(df, aes(x = prof_dr, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "prof_dr vs Tasa de graduados",
+       x = "prof_dr",
+       y = "% de graduados")+
+  theme_minimal()
+```
+## Razon de alumnos por profesores
+
+```{r}
+ggplot(df, aes(razon))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de razon",
+       x = "razon")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+
+
+
+```{r}
+ggplot(df, aes(x = razon, y = tasa_grad, color = privada)) +
+  geom_point() + 
+  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
+  labs(title = "razon vs Tasa de graduados",
+       x = "razon",
+       y = "% de graduados")+
+  theme_minimal()
+```
+## Tasa de graduados
+```{r}
+ggplot(df, aes(tasa_grad))+
+  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
+  geom_density(color = "blue")+
+  labs(title = "Histograma de tasa_grad",
+       x = "tasa_grad")+
+  theme_minimal()+
+  theme(legend.position = "none")
+```
+# Consigna 1
 
 Consigna I: Regresión Lineal 1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.
 
@@ -105,29 +279,6 @@ df_test <- slice(df, -filas_train)
 ```
 
 2.  Ajustar tres modelos diferentes de Regresión Lineal Múltiple con el método de los Mínimos Cuadrados Ordinarios (MCO), definiendo como variable respuesta a la tasa de graduación de cada universidad. Se debe justificar por qué se eligieron a esos tres modelos en particular (ejemplo: procesos automáticos, técnica del mejor subconjunto, criterios propios, etc.).
-
-Primer modelo con unicamente `cuota` como variable predictora.
-
-```{r}
-mod1 = lm(formula = tasa_grad ~ cuota, data = df_train)
-summary(mod1)
-```
-
-Segundo modelo con `cuota`, `top10` y su interacción como variables predictoras.
-
-```{r}
-mod2 = lm(formula = tasa_grad ~ cuota + top10 + cuota*top10, data = df_train)
-summary(mod2)
-```
-
-Tercer modelo con todas las variables predictoras.
-
-```{r}
-mod3 = lm(formula = tasa_grad ~ ., data = df_train)
-summary(mod3)
-```
-
-### Modelos alternativos
 
 El primer modelo propuesto surge de aplicar un método de selección *stepwise* considerando solamente las variables originales, sin interacciones.
 
@@ -169,29 +320,6 @@ mod3 <- lm(tasa_grad ~ privada + cuota + top10, data = df_train)
 ```
 
 3.  Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo "ganador".
-
-```{r}
-sum_sq_error1 = sum(mod1$residuals^2)
-sum_sq_error2 = sum(mod2$residuals^2)
-sum_sq_error3 = sum(mod3$residuals^2)
-mod1_CME = sum_sq_error1/(nrow(df_train)-1)
-mod1_PRESS = sum((mod1$residuals/(1-hatvalues(mod1)))^2)
-mod1_Cp = sum_sq_error1 / (sum_sq_error3/(nrow(df_train)-1)) + 2*length(coefficients(mod1)) -nrow(df_train)
-mod1_AIC = AIC(mod1)
-mod1_BIC = BIC(mod1)
-
-mod2_CME = sum_sq_error2/(nrow(df_train)-1)
-mod2_PRESS = sum((mod2$residuals/(1-hatvalues(mod2)))^2)
-mod2_Cp = sum_sq_error2 / (sum_sq_error3/(nrow(df_train)-1)) + 2*length(coefficients(mod2)) -nrow(df_train)
-mod2_AIC = AIC(mod2)
-mod2_BIC = BIC(mod2)
-
-mod3_CME = sum_sq_error3/(nrow(df_train)-1)
-mod3_PRESS = sum((mod3$residuals/(1-hatvalues(mod3)))^2)
-mod3_Cp = sum_sq_error3 / (sum_sq_error3/(nrow(df_train)-1)) + 2*length(coefficients(mod3)) -nrow(df_train)
-mod3_AIC = AIC(mod3)
-mod3_BIC = BIC(mod3)
-```
 
 ```{r}
 CME <- function(mod) { 
@@ -359,6 +487,7 @@ max(autovalues)/autovalues
 
 5.  Consierando el modelo elegido, interpretar en palabras del problema los efectos estimados de los predictores sobre la respuesta, incluida su significación estadística (resultados del test t).
 
+# Consigna 2
 Consigna II: Regularización y Predicción 1. Ajustar el modelo elegido en la etapa anterior mediante la técnica Ridge, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
 
 ```{r}
@@ -420,12 +549,21 @@ results
 
 ```
 
+# Consigna 3
 Consigna III: Regresión Logística 1. Sobre el conjunto de datos original, definir la variable respuesta: (0 si tasa_gradi \< 0.75) (1 si tasa_gradi ≥ 0.75)
 
 ```{r}
 df <- df %>% mutate(tasa_grad_binaria = if_else(tasa_grad < 75, F, T))
 ```
 
+```{r}
+ggplot(df, aes(x = tasa_grad_binaria, fill = tasa_grad_binaria))+
+  geom_bar() + 
+  labs(title = "Cantidad de alumnos por tasa de graduados (binaria)",
+       x = "",
+       y = "Cant. alumnos")+
+  theme_minimal()
+```
 2.  Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función `createDataPartition()` del paquete `caret` para asegurarse que la proporción de éxitos en cada partición sea balanceada.
 
 ```{r}
