@@ -20,7 +20,7 @@ editor: visual
 Se nos presenta una base de datos sobre universidades publicas y privadas con las siguientes variables
 
 | Variable       | Descripción                                                                                                                                                                                                                             |
-|---------------------|---------------------------------------------------|
+|------------------------|-----------------------------------------------|
 | `privada`      | indica si la universidad es privada o no.                                                                                                                                                                                               |
 | `aplicaciones` | cantidad de aplicaciones recibidas por la universidad durante el último año (cada estudiante que aspira a ingresar debe presentar una aplicación formal, a partir de la cual es admitido/a o rechazado/a), medida en miles de personas. |
 | `ingresantes`  | cantidad de aplicaciones aceptadas, medida en miles de personas.                                                                                                                                                                        |
@@ -63,8 +63,10 @@ df = df %>%
 #   select(where(is.numeric)) %>%
 #   names()
 ```
+
 Estos son los primeros 5 registro para entender como estan representados los datos
-``` {r}
+
+```{r}
 head(df)
 ```
 
@@ -88,12 +90,13 @@ corrplot(cor(dplyr::select(df, -privada)),
 
 Para la variable target `tasa_grad`, los coeficientes de pearson mas relevantes se dan para la siguientes variables,
 
-1. `cuota` con un valor positivo de 0.57
-1. `top10` con un valor positivo de 0.5
-1. `prof_dr` con un valor positivo de 0.31
-1. `razon` con un valor negativo de 0.31
+1.  `cuota` con un valor positivo de 0.57
+2.  `top10` con un valor positivo de 0.5
+3.  `prof_dr` con un valor positivo de 0.31
+4.  `razon` con un valor negativo de 0.31
 
 ## Privada
+
 ```{r}
 ggplot(df, aes(x = privada, fill = privada))+
   geom_bar() + 
@@ -126,7 +129,6 @@ ggplot(df, aes(cuota))+
   theme(legend.position = "none")
 ```
 
-
 ```{r}
 ggplot(df, aes(x = cuota, y = tasa_grad, color = privada)) +
   geom_point() + 
@@ -139,14 +141,14 @@ ggplot(df, aes(x = cuota, y = tasa_grad, color = privada)) +
 
 La variable `cuota` es de tipo cuantitativa con las siguientes métricas estadísticas
 
-|Variable | Valor|
-|----------|--------|
-|Maximo		| `{r} round(max(df$cuota),2)`|
-|Promedio	| `{r} round(mean(df$cuota),2)`|
-|Minimo		| `{r} round(min(df$cuota),2)`|
-|Desviacion	| `{r} round(sd(df$cuota),2)`|
+| Variable   | Valor                         |
+|------------|-------------------------------|
+| Maximo     | `{r} round(max(df$cuota),2)`  |
+| Promedio   | `{r} round(mean(df$cuota),2)` |
+| Minimo     | `{r} round(min(df$cuota),2)`  |
+| Desviacion | `{r} round(sd(df$cuota),2)`   |
 
-Al graficar esta variable con el target notamos una relación lineal, aunque con mucha dispersión, donde para valores bajos de cuota hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` ~ `cuota`
+Al graficar esta variable con el target notamos una relación lineal, aunque con mucha dispersión, donde para valores bajos de cuota hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` \~ `cuota`
 
 ## Aplicaciones
 
@@ -169,11 +171,13 @@ ggplot(df, aes(x = aplicaciones, y = tasa_grad, color = privada)) +
        y = "% de graduados")+
   theme_minimal()
 ```
+
 La variable `aplicaciones` es de tipo cuantitativa donde hay una concentración de observaciones grandes para valores bajos de aplicaciones.
 
 No se observa una clara relación lineal contra `tasa_grad`
 
 ## Ingresantes
+
 ```{r}
 ggplot(df, aes(ingresantes))+
   geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
@@ -183,7 +187,6 @@ ggplot(df, aes(ingresantes))+
   theme_minimal()+
   theme(legend.position = "none")
 ```
-
 
 ```{r}
 ggplot(df, aes(x = ingresantes, y = tasa_grad, color = privada)) +
@@ -200,6 +203,7 @@ La variable `ingresante` es de tipo cuantitativa donde hay una concentración de
 No se observa una clara relación lineal contra `tasa_grad`
 
 ## Estudiantes
+
 ```{r}
 ggplot(df, aes(estudiantes))+
   geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
@@ -209,7 +213,6 @@ ggplot(df, aes(estudiantes))+
   theme_minimal()+
   theme(legend.position = "none")
 ```
-
 
 ```{r}
 ggplot(df, aes(x = estudiantes, y = tasa_grad, color = privada)) +
@@ -226,6 +229,7 @@ La variable `estudiantes` es de tipo cuantitativa donde hay una concentracion de
 No se observa una clara relacion lineal contra `tasa_grad`
 
 ## Top 10
+
 ```{r}
 ggplot(df, aes(top10))+
   geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
@@ -235,7 +239,6 @@ ggplot(df, aes(top10))+
   theme_minimal()+
   theme(legend.position = "none")
 ```
-
 
 ```{r}
 ggplot(df, aes(x = top10, y = tasa_grad, color = privada)) +
@@ -249,18 +252,19 @@ ggplot(df, aes(x = top10, y = tasa_grad, color = privada)) +
 
 La variable `top10` es de tipo cuantitativa con las siguientes metricas estadisticas
 
-|Variable | Valor|
-|----------|--------|
-|Maximo		| `{r} round(max(df$top10),2)`|
-|Promedio	| `{r} round(mean(df$top10),2)`|
-|Minimo		| `{r} round(min(df$top10),2)`|
-|Desviacion	| `{r} round(sd(df$top10),2)`|
+| Variable   | Valor                         |
+|------------|-------------------------------|
+| Maximo     | `{r} round(max(df$top10),2)`  |
+| Promedio   | `{r} round(mean(df$top10),2)` |
+| Minimo     | `{r} round(min(df$top10),2)`  |
+| Desviacion | `{r} round(sd(df$top10),2)`   |
 
-Al graficar esta variable con el target notamos una relación lineal entre ellas pero para valores bajos de porcentaje de top10 hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` ~ `top10`
+Al graficar esta variable con el target notamos una relación lineal entre ellas pero para valores bajos de porcentaje de top10 hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` \~ `top10`
 
 Otro aspecto de interés es que las regresiones para los dos valores de la variable `privada` tienen una pendiente similar, pero diferente intercepto
 
 ## Profesores con doctorado
+
 ```{r}
 ggplot(df, aes(prof_dr))+
   geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
@@ -270,7 +274,6 @@ ggplot(df, aes(prof_dr))+
   theme_minimal()+
   theme(legend.position = "none")
 ```
-
 
 ```{r}
 ggplot(df, aes(x = prof_dr, y = tasa_grad, color = privada)) +
@@ -284,12 +287,12 @@ ggplot(df, aes(x = prof_dr, y = tasa_grad, color = privada)) +
 
 La variable `prof_dr` es de tipo cuantitativa con las siguientes métricas estadísticas
 
-|Variable | Valor|
-|----------|--------|
-|Maximo		| `{r} round(max(df$prof_dr),2)`|
-|Promedio	| `{r} round(mean(df$prof_dr),2)`|
-|Minimo		| `{r} round(min(df$prof_dr),2)`|
-|Desviacion	| `{r} round(sd(df$prof_dr),2)`|
+| Variable   | Valor                           |
+|------------|---------------------------------|
+| Maximo     | `{r} round(max(df$prof_dr),2)`  |
+| Promedio   | `{r} round(mean(df$prof_dr),2)` |
+| Minimo     | `{r} round(min(df$prof_dr),2)`  |
+| Desviacion | `{r} round(sd(df$prof_dr),2)`   |
 
 Al graficar esta variable con el target no se observa una clara relación lineal. Un aspecto de interés es que las regresiones para los dos valores de la variable `privada` tienen una pendiente similar, pero diferente intercepto
 
@@ -305,8 +308,6 @@ ggplot(df, aes(razon))+
   theme(legend.position = "none")
 ```
 
-
-
 ```{r}
 ggplot(df, aes(x = razon, y = tasa_grad, color = privada)) +
   geom_point() + 
@@ -319,18 +320,19 @@ ggplot(df, aes(x = razon, y = tasa_grad, color = privada)) +
 
 La variable `razon` es de tipo cuantitativa con las siguientes métricas estadísticas
 
-|Variable | Valor|
-|----------|--------|
-|Maximo		| `{r} round(max(df$razon),2)`|
-|Promedio	| `{r} round(mean(df$razon),2)`|
-|Minimo		| `{r} round(min(df$razon),2)`|
-|Desviacion	| `{r} round(sd(df$razon),2)`|
+| Variable   | Valor                         |
+|------------|-------------------------------|
+| Maximo     | `{r} round(max(df$razon),2)`  |
+| Promedio   | `{r} round(mean(df$razon),2)` |
+| Minimo     | `{r} round(min(df$razon),2)`  |
+| Desviacion | `{r} round(sd(df$razon),2)`   |
 
 La variable estudiantes es de tipo cuantitativa donde hay una concentración de observaciones grandes para valores entre 10 y 15.
 
 No se observa una clara relación lineal contra tasa_grad
 
 ## Tasa de graduados
+
 ```{r}
 ggplot(df, aes(tasa_grad))+
   geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
@@ -343,16 +345,16 @@ ggplot(df, aes(tasa_grad))+
 
 La variable `tasa_grad` es de tipo cuantitativa con las siguientes métricas estadísticas y es la variable target de nuestro análisis.
 
-|Variable | Valor|
-|----------|--------|
-|Maximo		| `{r} round(max(df$tasa_grad),2)`|
-|Promedio	| `{r} round(mean(df$tasa_grad),2)`|
-|Minimo		| `{r} round(min(df$tasa_grad),2)`|
-|Desviacion	| `{r} round(sd(df$tasa_grad),2)`|
+| Variable   | Valor                             |
+|------------|-----------------------------------|
+| Maximo     | `{r} round(max(df$tasa_grad),2)`  |
+| Promedio   | `{r} round(mean(df$tasa_grad),2)` |
+| Minimo     | `{r} round(min(df$tasa_grad),2)`  |
+| Desviacion | `{r} round(sd(df$tasa_grad),2)`   |
 
-# Consigna 1
+# Regresión Lineal
 
-Consigna I: Regresión Lineal 1. Dividir aleatoriamente al conjunto de datos en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Salvo que se exprese lo contrario, todas las consignas presentadas a continuación deben responderse empleando el conjunto de datos de entrenamiento.
+## División en entrenamiento y prueba
 
 ```{r}
 set.seed(1234)
@@ -362,9 +364,9 @@ df_train <- slice(df, filas_train)
 df_test <- slice(df, -filas_train)
 ```
 
-2.  Ajustar tres modelos diferentes de Regresión Lineal Múltiple con el método de los Mínimos Cuadrados Ordinarios (MCO), definiendo como variable respuesta a la tasa de graduación de cada universidad. Se debe justificar por qué se eligieron a esos tres modelos en particular (ejemplo: procesos automáticos, técnica del mejor subconjunto, criterios propios, etc.).
+## Ajustes de modelos
 
-El primer modelo propuesto surge de aplicar un método de selección *stepwise* considerando solamente las variables originales, sin interacciones.
+El **primer modelo** propuesto surge de aplicar un método de selección *stepwise* considerando solamente las variables originales, sin interacciones.
 
 ```{r}
 mod1 <- stepAIC(
@@ -378,7 +380,7 @@ mod1 <- stepAIC(
 mod1
 ```
 
-El segundo modelo también surge de aplicar el método *stepwise* pero considerando como modelo maximal aquel con todas las interacciones de segundo orden.
+El **segundo modelo** también surge de aplicar el método *stepwise* pero considerando como modelo maximal aquel con todas las interacciones de segundo orden.
 
 ```{r}
 mod2 <- stepAIC(
@@ -392,7 +394,7 @@ mod2 <- stepAIC(
 mod2
 ```
 
-El tercer modelo surge de aplicar la técnica de mejores subconjuntos. Visto que el modelo anterior incluye tres términos (dos efectos principales y una interacción entre ellos) se elige el mejor modelo con 3 variables explicativas.
+El **tercer modelo** surge de aplicar la técnica de mejores subconjuntos. Visto que el modelo anterior incluye tres términos (dos efectos principales y una interacción entre ellos) se elige el mejor modelo con 3 variables explicativas.
 
 ```{r}
 mejorsub <- regsubsets(x = tasa_grad ~ ., data = df_train)
@@ -403,7 +405,7 @@ summary(mejorsub)
 mod3 <- lm(tasa_grad ~ privada + cuota + top10, data = df_train)
 ```
 
-3.  Comparar los 3 modelos a través de las siguientes métricas de performance: CME, PRESS, Cp , AIC y BIC. En base a los resultados observados, elegir un modelo "ganador".
+## Comparación de modelos
 
 ```{r}
 CME <- function(mod) { 
@@ -433,7 +435,13 @@ metricas <- data.frame(
 metricas
 ```
 
-4.  Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.
+Puede verse que para casi todas las métricas, el mejor modelo (en términos de desempeño) es el segundo: aquel que considera dos explicativas y su interacción. Por lo tanto, el modelo seleccionado queda de la forma:
+
+$$
+\texttt{tasa_grad} = \beta_0 + \beta_1 \;\texttt{cuota} + \beta_2 \;\texttt{top10} + \beta_3 \;\texttt{cuota*top10} + \epsilon
+$$
+
+## Análisis de residuos
 
 ```{r}
 sel_mod = mod2
@@ -441,7 +449,7 @@ sel_mod = mod2
 diagnostico = broom::augment(sel_mod)
 ```
 
-Plot de los residuos
+### Residuos versus valores ajustados
 
 ```{r}
 
@@ -456,15 +464,17 @@ ggplot(data = diagnostico) +
       axis.title = element_text(face = "bold"))
 ```
 
-Test sobre los residuos
+Se puede ver que la variancia de los residuos no es constante para todos los valores ajustados. En particular, se evidencia una mayor variabilidad para tasas de graduación predichas en el rango 55% a 65%.
+
+La hipótesis anterior puede evaluarse mediante el test de Breusch-Pagan.
 
 ```{r}
 lmtest::bptest(sel_mod)
 ```
 
-Como el p-value resulta inferior al nivel de significación 5%, se rechaza la hipótesis nula, indicando que posiblemente no se esté cumpliendo el supuesto de homocedasticidad, tal como sospechábamos.
+Como el p-value resulta inferior al nivel de significación 5%, se rechaza la hipótesis nula, indicando que posiblemente no se esté cumpliendo el supuesto de homocedasticidad de los residuos.
 
-Residuos estandarizados
+### Residuos estandarizados
 
 ```{r}
 diagnostico$id <- seq(1:nrow(diagnostico))
@@ -483,25 +493,9 @@ ggplot(data = diagnostico) +
 
 ```
 
-Residuos studentizados
+Se encuentran 5 valores con residuos estandarizados mayores a 3 unidades, en valor absoluto. Esto corresponde a un `r round(100 * 5/nrow(df_train), 2)`% de la totalidad de las observaciones de entrenamiento.
 
-```{r}
-diagnostico$.stu.resid <- rstudent(sel_mod)
-
-ggplot(data = diagnostico) + 
-  aes(x = id, y = .stu.resid) + 
-  geom_point(alpha = 0.6) +
-  geom_hline(aes(yintercept = 0, color = "red")) +
-  geom_hline(aes(yintercept = -3, color = "red")) +
-  geom_hline(aes(yintercept = 3, color = "red")) +
-  xlab("Observación") +
-  ylab("Residuos estudentizados") +
-  theme_bw() +
-  theme(legend.position = "none",
-        axis.title = element_text(face = "bold"))
-```
-
-Residuos PRESS
+### Residuos PRESS
 
 ```{r}
 diagnostico$press <- qpcR::PRESS(sel_mod, verbose=FALSE)$residuals
@@ -517,7 +511,9 @@ ggplot(data = diagnostico) +
         axis.title = element_text(face = "bold"))
 ```
 
-Analisis de normalidad
+No se ve ninguna observación que arroje un residuo PRESS considerablemente mayor (en valor absoluto) al resto.
+
+### Análisis de normalidad
 
 ```{r}
 plot(sel_mod,2)
@@ -525,54 +521,35 @@ plot(sel_mod,2)
 nortest::ad.test(sel_mod$residuals)
 ```
 
-Dado que el p-value es inferior al nivel de significación del 5%, se rechaza la hipótesis nula de distribución Normal para los errores, y este supuesto parece no ser aceptable para este caso.
+Dado que el p-value es inferior al nivel de significación del 5%, se rechaza la hipótesis nula de distribución Normal para los errores.
 
-Analisis DFBETAS para encontrar outliers
-
-```{r}
-# Calculate DFBETAS
-dfbetas_values <- dfbetas(sel_mod)
-
-# Convert DFBETAS to a data frame for plotting
-dfbetas_data <- as.data.frame(dfbetas_values)
-dfbetas_data$Observation <- 1:nrow(dfbetas_data)
-
-# Melt the data frame for ggplot2
-
-dfbetas_melted <- reshape2::melt(dfbetas_data, id.vars = "Observation")
-
-# Plot DFBETAS for each coefficient
-ggplot(dfbetas_melted, aes(x = Observation, y = value, color = variable)) +
-  geom_point(alpha = 0.6) +
-  geom_hline(yintercept = c(-1, 1), color = "red", linetype = "dashed") +
-  facet_wrap(~ variable, scales = "free_y") +
-  xlab("Observation") +
-  ylab("DFBETAS") +
-  theme_bw() +
-  theme(
-    legend.position = "none",
-    axis.title = element_text(face = "bold"),
-    strip.text = element_text(face = "bold")
-  )
-```
-
-Estudio de colinealidad
+### Análisis de colinealidad
 
 ```{r}
 car::vif(sel_mod)
-
-X = model.matrix(sel_mod)
-
-autovalues = eigen(t(X) %*% X)$values
-
-max(autovalues)/autovalues
-
 ```
 
-5.  Consierando el modelo elegido, interpretar en palabras del problema los efectos estimados de los predictores sobre la respuesta, incluida su significación estadística (resultados del test t).
+Los términos `top10` y `cuota:top10` presentan un valor de VIF mayor a 5 unidades. Esto indicaría una colinealidad entre estos términos, lo cual resulta lógico dado que el segundo término refiere a la interacción entre el primer término y la variable explicativa restante. De hecho, puede verse que los valores de VIF para el modelo sin interacción se ven reducidos.
 
-# Consigna 2
-Consigna II: Regularización y Predicción 1. Ajustar el modelo elegido en la etapa anterior mediante la técnica Ridge, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
+```{r}
+car::vif(mod1)
+```
+
+## Interpretación de los predictores
+
+```{r}
+summary(sel_mod)
+```
+
+Los tres términos reusltan significativos al 5%. Por lo tanto, debido a la presencia de interacción, las interpretaciones de los coeficientes del modelo son las siguientes:
+
+-   Aumentar mil dólares la cuota se asocia con un incremento promedio en la tasa de graduación igual a `2,33 - 0,015 * top10` unidades porcentuales.
+
+-   Aumentar en una unidad porcentual el porcentaje de ingresantes que fueron parte del top 10% de estudiantes en sus escuelas secundarias se asocia con un incremento promedio en la tasa de graduación igual a `0,43 - 0,015 * top10` unidades porcentuales.
+
+# Regularización y Predicción
+
+## Ajuste con técnica Ridge
 
 ```{r}
 set.seed(12343)
@@ -593,19 +570,19 @@ lambda_ridge = mod_ridge$bestTune[[2]]
 
 mod_ridge_sel = glmnet(x = X_train, y = Y_train, alpha = 0, lambda = lambda_ridge)
 
-coefficients(sel_mod)
-
-coefficients(mod_ridge_sel)
+lambda_ridge
 
 ```
 
-2.  Ajustar el modelo elegido en la etapa anterior mediante la técnica Lasso, eligiendo el parámetro de penalidad mediante validación cruzada k-fold. Informar el valor óptimo de λ y comparar el resultado de este ajuste con el obtenido mediante MCO.
+## Ajuste con técnica Lasso
 
 ```{r}
+set.seed(567)
+
 mod_lasso = train(
   x = X_train, y= Y_train,
   method = "glmnet",
-  tuneGrid = expand.grid(alpha = 1, lambda = seq(0,0.5,by = 0.02)),
+  tuneGrid = expand.grid(alpha = 1, lambda = seq(0,1,by = 0.1)),
   metric = "RMSE",
   trControl = trainControl(method = "repeatedcv", number = 5, repeats = 5)
 )
@@ -614,47 +591,54 @@ lambda_lasso = mod_lasso$bestTune[[2]]
 
 mod_lasso_sel = glmnet(x = X_train, y = Y_train, alpha = 1, lambda = lambda_lasso)
 
-coefficients(mod_lasso_sel)
+lambda_lasso
 ```
 
-3.  Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.
+Para la técnica Lasso, el valor óptimo del parámetro de regulraización es \$\\lambda = 0\$, lo cual implica estimaciones equivalentes a Mínimos Cuadrados Ordinarios. En otras palabras, bajo la técnica Lasso se concluye que no sería necesario aplicar regularización.
+
+## Comparación de modelos
+
+### Ajuste
+
+```{r}
+coefs <- cbind(
+  coefficients(sel_mod), 
+  coefficients(mod_ridge_sel)
+) %>% t()
+rownames(coefs) <- c("MCO", "Ridge")
+coefs
+```
+
+Los coeficientes asociados a los efectos principales se ven reducidos al aplicar regularización por Ridge.
+
+### Capacidad predictiva
 
 ```{r}
 pred_MCO = predict(sel_mod, newdata = df_test)
 
 X_test = model.matrix(sel_mod, data = df_test)[,-1]
-
 Y_test = df_test$tasa_grad
 
 pred_ridge = predict(mod_ridge, newdata = X_test)
 
-pred_lasso = predict(mod_lasso, newdata = X_test)
-
 rmse_MCO = sqrt(mean((pred_MCO - Y_test)^2))
 rmse_ridge = sqrt(mean((pred_ridge - Y_test)^2))
-rmse_lasso = sqrt(mean((pred_lasso - Y_test)^2))
 
-results = tibble(rmse_MCO,rmse_ridge,rmse_lasso)
+results = tibble(rmse_MCO, rmse_ridge)
 results
-
 ```
 
-# Consigna 3
-Consigna III: Regresión Logística 1. Sobre el conjunto de datos original, definir la variable respuesta: (0 si tasa_gradi \< 0.75) (1 si tasa_gradi ≥ 0.75)
+Los valores de RMSE son muy similares para ambos métodos de estimación, aunque es menor para Mínimos Cuadrados Ordinarios, indicando que la regularización no mejora la capacidad predictiva del modelo.
+
+# Regresión Logística
+
+## Definición de variable respuesta (dicotómica)
 
 ```{r}
 df <- df %>% mutate(tasa_grad_binaria = if_else(tasa_grad < 75, F, T))
 ```
 
-```{r}
-ggplot(df, aes(x = tasa_grad_binaria, fill = tasa_grad_binaria))+
-  geom_bar() + 
-  labs(title = "Cantidad de alumnos por tasa de graduados (binaria)",
-       x = "",
-       y = "Cant. alumnos")+
-  theme_minimal()
-```
-2.  Dividir aleatoriamente al conjunto de datos inicial en bloques de entrenamiento (70%) y prueba (30%), definiendo una semilla para hacer que el resultado sea reproducible. Utilizar la función `createDataPartition()` del paquete `caret` para asegurarse que la proporción de éxitos en cada partición sea balanceada.
+## División en entrenamiento y prueba
 
 ```{r}
 set.seed(1492)
@@ -663,7 +647,7 @@ logreg_train <- df[particion_logreg,]
 logreg_test <- df[-particion_logreg,]
 ```
 
-3.  Ajustar un modelo de regresión logística para estudiar la variable binaria definida en el punto 1. Este modelo debe incluir todas las explicativas disponibles, a excepción de la variable tasa_grad original. En base al resultado obtenido, interpretar las razones de odds asociadas a predictores estadísticamente significativos al 5%.
+## Ajuste e interpretación del modelo
 
 ```{r}
 logreg_mod <- glm(
@@ -674,14 +658,15 @@ summary(logreg_mod)
 ```
 
 ```{r}
-exp(logreg_mod$coefficients[5:7])
+exp(logreg_mod$coefficients[c(3, 5:7)])
 ```
 
+-   Ante un aumento de mil aplicaciones recibidas, la chance de que una universidad tenga una buena tasa de graduación aumenta en un 16%.
 -   Ante un aumento de mil estudiantes en carreras de grado, la chance de que una universidad tenga una buena tasa de graduación disminuye en un 29%.
 -   Ante un aumento en una unidad porcentual del porcentaje de ingresantes que fueron parte del top 10% de estudiantes en sus escuelas secundarias, la chance de que una universidad tenga una buena tasa se graduación aumenta en un 2%.
 -   Ante un aumento de mil dólares en la cuota, la chance de que una universidad tenga una buena tasa de graduación aumenta en un 22%.
 
-4.  Elegir el punto de corte óptimo para clasificación mediante el método de la curva ROC.
+## Curva ROC y punto de corte óptimo
 
 ```{r}
 curvaROC <- roc(
@@ -693,15 +678,30 @@ plot(curvaROC, print.auc = TRUE)
 threshold <- pROC::coords(curvaROC, "best", ret = "threshold")[1,]
 ```
 
-5.  Utilizando el punto de corte hallado, clasificar las universidades del conjunto de datos de prueba y construir la matriz de confusión correspondiente. Informar e interpretar los valores observados de precisión, sensibilidad, especificidad, VPP, VPN, F1 y κ.
+Se obtiene un valor de AUC (área bajo la curva) igual a 0,8, lo cual habla de un buen clasificador.
+
+Bajo el método de Youden se obtiene un punto de corte óptimo igual a `r round(threshold, 3)`. Este valor es lejano al punto de corte por defecto: 0,5.
+
+## Métricas de capacidad predictiva
 
 ```{r}
 p_hat <- predict(logreg_mod, logreg_test)
+
 observados <- logreg_test %>% 
   mutate(y = if_else(tasa_grad_binaria, "Buena tasa", "Mala tasa")) %>% 
-  pull(y) %>% factor(levels = c("Mala tasa", "Buena tasa"))
-predichos <- factor(ifelse(p_hat >= threshold, "Buena tasa", "Mala tasa"), levels = c("Mala tasa", "Buena tasa"))
-confusionMatrix(data = predichos, reference = observados, positive = "Buena tasa")
+  pull(y) %>% 
+  factor(levels = c("Mala tasa", "Buena tasa"))
+
+predichos <- factor(
+  ifelse(p_hat >= threshold, "Buena tasa", "Mala tasa"), 
+  levels = c("Mala tasa", "Buena tasa")
+)
+confusionMatrix(
+  data = predichos, 
+  reference = observados, 
+  mode = "everything",
+  positive = "Buena tasa"
+)
 ```
 
 -   **Precisión:** El modelo clasifica correctamente al 77% de las universidades del conjunto de prueba según si tienen o no una buena tasa de graduación.
@@ -709,4 +709,5 @@ confusionMatrix(data = predichos, reference = observados, positive = "Buena tasa
 -   **Especificidad:** Entre las universidades con mala tasa de graduación, un 94% fueron clasificadas correctamente.
 -   **VPP:** Cuando el modelo predice que una universidad tiene una buena tasa de graduación, acierta un 75% de las veces.
 -   **VPN:** Cuando el modelo predice que una universidad tiene una mala tasa de graduación, acierta un 78% de las veces.
+-   **F1:** La media armónica entre la sensibilidad y el VPP resulta igual a 50%.
 -   **Kappa:** La capacidad predictiva del modelo propuesto es aceptable.
