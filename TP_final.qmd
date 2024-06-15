@@ -5,7 +5,7 @@ author: "Joaquin Bermejo, Franco Scarafia y Gerard Seward"
 format: 
   html:
     df-print: paged
-    code-fold: true
+    code-fold: false
     theme: darkly
     toc: true
   pdf: default
@@ -86,7 +86,7 @@ corrplot(cor(dplyr::select(df, -privada)),
 #ggpairs(df, aes(colour = privada, alpha = 0.4))
 ```
 
-Para la variable target `tasa_grad`, los coeficientes de person mas relevantes se dan para la siguientes variables,
+Para la variable target `tasa_grad`, los coeficientes de pearson mas relevantes se dan para la siguientes variables,
 
 1. `cuota` con un valor positivo de 0.57
 1. `top10` con un valor positivo de 0.5
@@ -436,7 +436,7 @@ metricas
 4.  Realizar un análisis de residuos sobre el modelo seleccionado en el punto anterior. Este análisis debe incluir el chequeo de cumplimiento de supuestos, presencia de colinealidad y casos atípicos y/o influyentes.
 
 ```{r}
-sel_mod = mod3
+sel_mod = mod2
 
 diagnostico = broom::augment(sel_mod)
 ```
@@ -577,21 +577,25 @@ Consigna II: Regularización y Predicción 1. Ajustar el modelo elegido en la et
 ```{r}
 set.seed(12343)
 
-X_train = df_train %>% 
-  dplyr::select(predictors(sel_mod)) %>% 
-  as.matrix()
-
+X_train = model.matrix(sel_mod)[,-1]
+  
 Y_train = df_train$tasa_grad
 
 mod_ridge = train(
   x = X_train, y= Y_train,
   method = "glmnet",
-  tuneGrid = expand.grid(alpha = 0, lambda = seq(0,1,by = 0.2)),
+  tuneGrid = expand.grid(alpha = 0, lambda = seq(0,1,by = 0.1)),
   metric = "RMSE",
   trControl = trainControl(method = "repeatedcv", number = 5, repeats = 5)
 )
 
-mod_ridge$bestTune[[2]]
+lambda_ridge = mod_ridge$bestTune[[2]]
+
+mod_ridge_sel = glmnet(x = X_train, y = Y_train, alpha = 0, lambda = lambda_ridge)
+
+coefficients(sel_mod)
+
+coefficients(mod_ridge_sel)
 
 ```
 
@@ -606,7 +610,11 @@ mod_lasso = train(
   trControl = trainControl(method = "repeatedcv", number = 5, repeats = 5)
 )
 
-mod_lasso$bestTune[[2]]
+lambda_lasso = mod_lasso$bestTune[[2]]
+
+mod_lasso_sel = glmnet(x = X_train, y = Y_train, alpha = 1, lambda = lambda_lasso)
+
+coefficients(mod_lasso_sel)
 ```
 
 3.  Evaluar la capacidad predictiva de los modelos MCO, Ridge y Lasso utilizándolos para estimar la tasa de graduación de universidades presentes en el conjunto de datos de prueba. Proveer alguna medida del error de predicción y determinar cuál de los tres modelos es el más adecuado.
@@ -614,9 +622,7 @@ mod_lasso$bestTune[[2]]
 ```{r}
 pred_MCO = predict(sel_mod, newdata = df_test)
 
-X_test = df_test %>% 
-  dplyr::select(predictors(sel_mod)) %>% 
-  as.matrix()
+X_test = model.matrix(sel_mod, data = df_test)[,-1]
 
 Y_test = df_test$tasa_grad
 
