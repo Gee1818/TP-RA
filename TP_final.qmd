@@ -1,6 +1,6 @@
 ---
 title: "Universidades"
-subtitle: "TP Final - Regresion avanzada"
+subtitle: "TP Final - Regresión Avanzada"
 author: "Joaquin Bermejo, Franco Scarafia y Gerard Seward"
 format: 
   html:
@@ -8,19 +8,22 @@ format:
     code-fold: false
     theme: darkly
     toc: true
-  pdf: default
+  pdf:
+    echo: false
+    warning: false
+    message: false
 
 #execute: 
   #echo: false
 editor: visual
 ---
 
-# Introduccion
+# Introducción
 
-Se nos presenta una base de datos sobre universidades publicas y privadas con las siguientes variables
+Se nos presenta una base de datos sobre universidades públicas y privadas con las siguientes variables
 
 | Variable       | Descripción                                                                                                                                                                                                                             |
-|------------------------|-----------------------------------------------|
+|--------------------------|----------------------------------------------|
 | `privada`      | indica si la universidad es privada o no.                                                                                                                                                                                               |
 | `aplicaciones` | cantidad de aplicaciones recibidas por la universidad durante el último año (cada estudiante que aspira a ingresar debe presentar una aplicación formal, a partir de la cual es admitido/a o rechazado/a), medida en miles de personas. |
 | `ingresantes`  | cantidad de aplicaciones aceptadas, medida en miles de personas.                                                                                                                                                                        |
@@ -31,9 +34,7 @@ Se nos presenta una base de datos sobre universidades publicas y privadas con la
 | `razon`        | tasa de estudiantes por profesor.                                                                                                                                                                                                       |
 | `tasa_grad`    | porcentaje de estudiantes que se gradúan.                                                                                                                                                                                               |
 
-La variable de interés es `tasa_grad` que indica el porcentaje de estudiantes que se gradúan
-
-A continuacion se importan las librerias que utilizaremos y se lee la funte de la base de datos
+La variable de interés es `tasa_grad` que indica el porcentaje de estudiantes que se gradúan.
 
 ```{r}
 #| message: FALSE
@@ -54,309 +55,14 @@ library(glmnet)
 df = read.delim('1-data/universidades.txt')
 df = df %>% 
   mutate(privada = ifelse(privada == "Si", TRUE, FALSE))
-
-# categoricals_vars <- df %>%
-#   select(where(is.factor)) %>%
-#   names()
-
-# continuous_vars <- df %>%
-#   select(where(is.numeric)) %>%
-#   names()
 ```
-
-Estos son los primeros 5 registro para entender como estan representados los datos
-
-```{r}
-head(df)
-```
-
-# Resumen de los datos
-
-```{r}
-skimr::skim(df)
-corrplot(cor(dplyr::select(df, -privada)),
-         method = "color",
-         type = "lower", 
-         addCoef.col = "black",
-         tl.cex = 0.6,
-         tl.pos = "ld",
-         tl.srt = 45,
-         title = "Correlation Plot for Numerical Variables",
-         order = "hclust",
-         mar = c(0, 0, 2, 0))
-#ggpairs(df)
-#ggpairs(df, aes(colour = privada, alpha = 0.4))
-```
-
-Para la variable target `tasa_grad`, los coeficientes de pearson mas relevantes se dan para la siguientes variables,
-
-1.  `cuota` con un valor positivo de 0.57
-2.  `top10` con un valor positivo de 0.5
-3.  `prof_dr` con un valor positivo de 0.31
-4.  `razon` con un valor negativo de 0.31
-
-## Privada
-
-```{r}
-ggplot(df, aes(x = privada, fill = privada))+
-  geom_bar() + 
-  labs(title = "Cantidad de alumnos por tipo de universidad",
-       x = "Tipo",
-       y = "Cant. alumnos")+
-  theme_minimal()
-```
-
-```{r}
-ggplot(df) +
-  aes(x = tasa_grad) + 
-  geom_histogram(na.rm = TRUE, bins = 12, color = "black", aes(fill = privada)) + 
-  facet_wrap(~ privada) + 
-  theme(legend.position = "bottom")+
-  theme_minimal()
-```
-
-La variable `privada` es de tipo categórica con valores positivos (565) y negativos (212) cuya tasa de graduados se comporta diferente. Las universidades privadas tienden a tener una mayor tasa de graduados
-
-## Cuota
-
-```{r}
-ggplot(df, aes(cuota))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de cuota",
-       x = "Cuota")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = cuota, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "Cuota vs Tasa de graduados",
-       x = "Cuota",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `cuota` es de tipo cuantitativa con las siguientes métricas estadísticas
-
-| Variable   | Valor                         |
-|------------|-------------------------------|
-| Maximo     | `{r} round(max(df$cuota),2)`  |
-| Promedio   | `{r} round(mean(df$cuota),2)` |
-| Minimo     | `{r} round(min(df$cuota),2)`  |
-| Desviacion | `{r} round(sd(df$cuota),2)`   |
-
-Al graficar esta variable con el target notamos una relación lineal, aunque con mucha dispersión, donde para valores bajos de cuota hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` \~ `cuota`
-
-## Aplicaciones
-
-```{r}
-ggplot(df, aes(aplicaciones))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de aplicaciones",
-       x = "aplicaciones")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = aplicaciones, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "aplicaciones vs Tasa de graduados",
-       x = "aplicaciones",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `aplicaciones` es de tipo cuantitativa donde hay una concentración de observaciones grandes para valores bajos de aplicaciones.
-
-No se observa una clara relación lineal contra `tasa_grad`
-
-## Ingresantes
-
-```{r}
-ggplot(df, aes(ingresantes))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de ingresantes",
-       x = "ingresantes")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = ingresantes, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "ingresantes vs Tasa de graduados",
-       x = "ingresantes",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `ingresante` es de tipo cuantitativa donde hay una concentración de observaciones grandes para valores bajos de ingresantes.
-
-No se observa una clara relación lineal contra `tasa_grad`
-
-## Estudiantes
-
-```{r}
-ggplot(df, aes(estudiantes))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de estudiantes",
-       x = "estudiantes")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = estudiantes, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "estudiantes vs Tasa de graduados",
-       x = "estudiantes",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `estudiantes` es de tipo cuantitativa donde hay una concentracion de observaciones grandes para valores bajos de estudiantes.
-
-No se observa una clara relacion lineal contra `tasa_grad`
-
-## Top 10
-
-```{r}
-ggplot(df, aes(top10))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de top10",
-       x = "top10")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = top10, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "top10 vs Tasa de graduados",
-       x = "top10",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `top10` es de tipo cuantitativa con las siguientes metricas estadisticas
-
-| Variable   | Valor                         |
-|------------|-------------------------------|
-| Maximo     | `{r} round(max(df$top10),2)`  |
-| Promedio   | `{r} round(mean(df$top10),2)` |
-| Minimo     | `{r} round(min(df$top10),2)`  |
-| Desviacion | `{r} round(sd(df$top10),2)`   |
-
-Al graficar esta variable con el target notamos una relación lineal entre ellas pero para valores bajos de porcentaje de top10 hay una mayor variación entre el valor real con el un valor predicho con una regresión lineal donde `tasa_grad` \~ `top10`
-
-Otro aspecto de interés es que las regresiones para los dos valores de la variable `privada` tienen una pendiente similar, pero diferente intercepto
-
-## Profesores con doctorado
-
-```{r}
-ggplot(df, aes(prof_dr))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de prof_dr",
-       x = "prof_dr")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = prof_dr, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "prof_dr vs Tasa de graduados",
-       x = "prof_dr",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `prof_dr` es de tipo cuantitativa con las siguientes métricas estadísticas
-
-| Variable   | Valor                           |
-|------------|---------------------------------|
-| Maximo     | `{r} round(max(df$prof_dr),2)`  |
-| Promedio   | `{r} round(mean(df$prof_dr),2)` |
-| Minimo     | `{r} round(min(df$prof_dr),2)`  |
-| Desviacion | `{r} round(sd(df$prof_dr),2)`   |
-
-Al graficar esta variable con el target no se observa una clara relación lineal. Un aspecto de interés es que las regresiones para los dos valores de la variable `privada` tienen una pendiente similar, pero diferente intercepto
-
-## Razon de alumnos por profesores
-
-```{r}
-ggplot(df, aes(razon))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de razon",
-       x = "razon")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(df, aes(x = razon, y = tasa_grad, color = privada)) +
-  geom_point() + 
-  geom_smooth(formula = "y ~ x", method = "lm", se = FALSE)+
-  labs(title = "razon vs Tasa de graduados",
-       x = "razon",
-       y = "% de graduados")+
-  theme_minimal()
-```
-
-La variable `razon` es de tipo cuantitativa con las siguientes métricas estadísticas
-
-| Variable   | Valor                         |
-|------------|-------------------------------|
-| Maximo     | `{r} round(max(df$razon),2)`  |
-| Promedio   | `{r} round(mean(df$razon),2)` |
-| Minimo     | `{r} round(min(df$razon),2)`  |
-| Desviacion | `{r} round(sd(df$razon),2)`   |
-
-La variable estudiantes es de tipo cuantitativa donde hay una concentración de observaciones grandes para valores entre 10 y 15.
-
-No se observa una clara relación lineal contra tasa_grad
-
-## Tasa de graduados
-
-```{r}
-ggplot(df, aes(tasa_grad))+
-  geom_histogram(bins = 30, aes(fill = "#F8766D", y = after_stat(density)))+
-  geom_density(color = "blue")+
-  labs(title = "Histograma de tasa_grad",
-       x = "tasa_grad")+
-  theme_minimal()+
-  theme(legend.position = "none")
-```
-
-La variable `tasa_grad` es de tipo cuantitativa con las siguientes métricas estadísticas y es la variable target de nuestro análisis.
-
-| Variable   | Valor                             |
-|------------|-----------------------------------|
-| Maximo     | `{r} round(max(df$tasa_grad),2)`  |
-| Promedio   | `{r} round(mean(df$tasa_grad),2)` |
-| Minimo     | `{r} round(min(df$tasa_grad),2)`  |
-| Desviacion | `{r} round(sd(df$tasa_grad),2)`   |
 
 # Regresión Lineal
 
 ## División en entrenamiento y prueba
 
 ```{r}
+#| echo: true
 set.seed(1234)
 filas_train <- sample(x = 1:nrow(df), size = nrow(df)*0.7) #asignacion aleatoria
 
@@ -437,9 +143,7 @@ metricas
 
 Puede verse que para casi todas las métricas, el mejor modelo (en términos de desempeño) es el segundo: aquel que considera dos explicativas y su interacción. Por lo tanto, el modelo seleccionado queda de la forma:
 
-$$
-\texttt{tasa_grad} = \beta_0 + \beta_1 \;\texttt{cuota} + \beta_2 \;\texttt{top10} + \beta_3 \;\texttt{cuota*top10} + \epsilon
-$$
+$tasa\_grad = \beta_0 + \beta_1 \; cuota + \beta_2 \; top10 + \beta_3 \; cuota*top10 + \epsilon$
 
 ## Análisis de residuos
 
@@ -529,7 +233,7 @@ Dado que el p-value es inferior al nivel de significación del 5%, se rechaza la
 car::vif(sel_mod)
 ```
 
-Los términos `top10` y `cuota:top10` presentan un valor de VIF mayor a 5 unidades. Esto indicaría una colinealidad entre estos términos, lo cual resulta lógico dado que el segundo término refiere a la interacción entre el primer término y la variable explicativa restante. De hecho, puede verse que los valores de VIF para el modelo sin interacción se ven reducidos.
+Los términos ```` top10```y``cuota:top10 ```` presentan un valor de VIF mayor a 5 unidades. Esto indicaría una colinealidad entre estos términos, lo cual resulta lógico dado que el segundo término refiere a la interacción entre el primer término y la variable explicativa restante. De hecho, puede verse que los valores de VIF para el modelo sin interacción se ven reducidos.
 
 ```{r}
 car::vif(mod1)
@@ -570,7 +274,7 @@ lambda_ridge = mod_ridge$bestTune[[2]]
 
 mod_ridge_sel = glmnet(x = X_train, y = Y_train, alpha = 0, lambda = lambda_ridge)
 
-lambda_ridge
+print(paste("Mejor valor de lambda:", lambda_ridge))
 
 ```
 
@@ -591,10 +295,10 @@ lambda_lasso = mod_lasso$bestTune[[2]]
 
 mod_lasso_sel = glmnet(x = X_train, y = Y_train, alpha = 1, lambda = lambda_lasso)
 
-lambda_lasso
+print(paste("Mejor valor de lambda:", lambda_lasso))
 ```
 
-Para la técnica Lasso, el valor óptimo del parámetro de regulraización es \$\\lambda = 0\$, lo cual implica estimaciones equivalentes a Mínimos Cuadrados Ordinarios. En otras palabras, bajo la técnica Lasso se concluye que no sería necesario aplicar regularización.
+Para la técnica Lasso, el valor óptimo del parámetro de regulraización es $\lambda = 0$, lo cual implica estimaciones equivalentes a Mínimos Cuadrados Ordinarios. En otras palabras, bajo la técnica Lasso se concluye que no sería necesario aplicar regularización.
 
 ## Comparación de modelos
 
@@ -635,12 +339,14 @@ Los valores de RMSE son muy similares para ambos métodos de estimación, aunque
 ## Definición de variable respuesta (dicotómica)
 
 ```{r}
+#| echo: true
 df <- df %>% mutate(tasa_grad_binaria = if_else(tasa_grad < 75, F, T))
 ```
 
 ## División en entrenamiento y prueba
 
 ```{r}
+#| echo: true
 set.seed(1492)
 particion_logreg <- createDataPartition(df$tasa_grad_binaria, p = 0.7, list = F)
 logreg_train <- df[particion_logreg,]
