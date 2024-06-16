@@ -247,9 +247,9 @@ summary(sel_mod)
 
 Los tres términos reusltan significativos al 5%. Por lo tanto, debido a la presencia de interacción, las interpretaciones de los coeficientes del modelo son las siguientes:
 
--   Aumentar mil dólares la cuota se asocia con un incremento promedio en la tasa de graduación igual a `2,33 - 0,015 * cuota` unidades porcentuales.
+-   Aumentar mil dólares la cuota se asocia con un incremento promedio en la tasa de graduación igual a `2,33` mas `-0,015 * top10` por la interacción en unidades porcentuales.
 
--   Aumentar en una unidad porcentual el porcentaje de ingresantes que fueron parte del top 10% de estudiantes en sus escuelas secundarias se asocia con un incremento promedio en la tasa de graduación igual a `0,43 - 0,015 * top10` unidades porcentuales.
+-   Aumentar en una unidad porcentual el porcentaje de ingresantes que fueron parte del top 10% de estudiantes en sus escuelas secundarias se asocia con un incremento promedio en la tasa de graduación igual a `0,43` mas `- 0,015 * cuota` por la interacción en unidades porcentuales.
 
 # Regularización y Predicción
 
