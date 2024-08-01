@@ -561,6 +561,22 @@
             "lineageTag": "27d9185d-24d3-4d08-853b-6ba0ede15040",
             "sourceColumn": "ZIPCODE",
             "summarizeBy": "none"
+          },
+          {
+            "name": "COUNTRY",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataCategory": "Country",
+            "dataType": "string",
+            "expression": "\"United States\"",
+            "isDataTypeInferred": true,
+            "lineageTag": "620bf4b1-d24c-4827-a11b-b2eaccca970d",
+            "summarizeBy": "none",
+            "type": "calculated"
           }
         ],
         "lineageTag": "294ab2d2-83fe-4e3f-831c-93dba7dc879e",

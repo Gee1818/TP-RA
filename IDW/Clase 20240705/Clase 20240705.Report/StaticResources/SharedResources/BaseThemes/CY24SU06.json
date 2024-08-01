@@ -1,5 +1,5 @@
 {
-  "name": "CY24SU02",
+  "name": "CY24SU06",
   "dataColors": [
     "#118DFF",
     "#12239E",
@@ -143,6 +143,11 @@
             "transparency": 0
           }
         ],
+        "border": [
+          {
+            "width": 1
+          }
+        ],
         "outspacePane": [
           {
             "backgroundColor": {
@@ -220,6 +225,11 @@
             "backgroundTransparency": 0,
             "gridLineType": "inner"
           }
+        ],
+        "forecast": [
+          {
+            "matchSeriesInterpolation": true
+          }
         ]
       }
     },
@@ -282,9 +292,10 @@
     },
     "pivotTable": {
       "*": {
-        "*": [
+        "rowHeaders": [
           {
-            "showExpandCollapseButtons": true
+            "showExpandCollapseButtons": true,
+            "legacyStyleDisabled": true
           }
         ]
       }
