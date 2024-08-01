@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="tp mysql.tuia_alumnos"
+  DTS:DTSID="{02B1DCDA-DAF7-4C5D-ADC0-ECC9753B21BC}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="uid=tuia_alumnos;Dsn=tp mysql;">
+      <DTS:Password
+        DTS:Name="pwd"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZHz4XdAdO0KKFmnf3ImsrgAAAAACAAAAAAAQZgAAAAEAACAAAAAQzmZ7V0qCV8YTb/n92XLzq17NC7Q2CBY0L4z6oJyx6gAAAAAOgAAAAAIAACAAAADcsyvgnu6QvHwPiR0RjD8ut1gQEhNcXiNtFtULPwPgSXAAAAAA0vuIW1mlFNqmjU7WjOugNzixuxndtCBbhA7XQWDNkjVSNQuhvXaDRb4lW9Siz5VEiwCpMpKYdH0/0XOjNfvtMUAlWh3xcwLCMer4sAVYRkfKvMKTkgoHDHfD7dULn2FSXEoMKKocbHU2FrRRixZEQAAAACNvf6kfP+Z9O9qYmrHcXwvVHi2NmP/uypwnX+50+4iYkpvyHnskOb15Gi+TNN46CQlL+70htPGCG363SPLJv7w=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

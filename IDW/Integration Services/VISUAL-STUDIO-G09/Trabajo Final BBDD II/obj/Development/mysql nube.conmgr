@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="mysql nube"
+  DTS:DTSID="{DA072516-1D0C-48A4-8261-142A61D0E8D6}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Dsn=mysql nube;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

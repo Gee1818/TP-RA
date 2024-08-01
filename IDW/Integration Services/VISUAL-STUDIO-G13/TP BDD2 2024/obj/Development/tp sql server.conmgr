@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="tp sql server"
+  DTS:DTSID="{8FF09E25-4119-452D-A052-1DF4C5D856DE}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="uid=TUIA_ALUMNOS;Dsn=tp sql server;">
+      <DTS:Password
+        DTS:Name="pwd"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZHz4XdAdO0KKFmnf3ImsrgAAAAACAAAAAAAQZgAAAAEAACAAAACBRZGi8skHXP9oK+IBEj7oszO5eX/ynJLhm2l6Z36knQAAAAAOgAAAAAIAACAAAABESlhU8PzPny5o56qjyxYkoGm3IwUZPlITJTgJOv0sInAAAADhuy2KFJNlNJTC6TjEGjhdDjFlue4bl5DrRxjPGO+/cSh8VdfXYN7SMrV//9EBDD74bhrw8MyXmtTQRl/wXLrYGOdh2b5vg+nSZhaLWSfO1S5VCfIYT7BlamoKtaUsXOlg0mcbI2FmcBH8ssOtx2oEQAAAANLiVUwdtfV3mkAKKBEZIoGj6sVbkgUPQp+9eeIZa1dFgDr2Dt+fPeYLwT59acQ/TX6KdPE0R0acW0imnbfvyHU=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

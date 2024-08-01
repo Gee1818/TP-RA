@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="DB Mysql 64"
+  DTS:DTSID="{FAF5D2E9-E81E-4D11-9A9C-9E63A74CBC34}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Dsn=DB Mysql 64;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

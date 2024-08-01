@@ -1,0 +1,88 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="clientes_errores"
+  DTS:DTSID="{BBBC756B-522C-4D65-838B-0B9659BF4710}"
+  DTS:CreationName="FLATFILE">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:Format="Delimited"
+      DTS:LocaleID="11274"
+      DTS:HeaderRowDelimiter="_x0009_"
+      DTS:RowDelimiter=""
+      DTS:TextQualifier="_x003C_none_x003E_"
+      DTS:CodePage="1252"
+      DTS:ConnectionString="G:\Mi unidad\tecnicatura_ia\base_dato_II\tp\tablas_errores\clientes_errores.txt">
+      <DTS:FlatFileColumns>
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:DataType="3"
+          DTS:TextQualified="True"
+          DTS:ObjectName="CUSTOMER_ID"
+          DTS:DTSID="{20D1D971-FA69-449E-B5BF-654C3698B57F}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:MaximumWidth="255"
+          DTS:DataType="130"
+          DTS:TextQualified="True"
+          DTS:ObjectName="FULL_NAME"
+          DTS:DTSID="{17D468F1-B2C1-40D3-9F7D-49D1C154CAD4}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:MaximumWidth="255"
+          DTS:DataType="130"
+          DTS:TextQualified="True"
+          DTS:ObjectName="BIRTH_DATE"
+          DTS:DTSID="{315CB963-3631-4878-B748-B85ECAE06D4C}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:MaximumWidth="255"
+          DTS:DataType="130"
+          DTS:TextQualified="True"
+          DTS:ObjectName="CITY"
+          DTS:DTSID="{9DE06006-BB6E-4913-8FE8-96FFEFE24B91}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:MaximumWidth="255"
+          DTS:DataType="130"
+          DTS:TextQualified="True"
+          DTS:ObjectName="STATE"
+          DTS:DTSID="{B39E6440-482A-4C58-895B-8C1A9009F519}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:DataType="20"
+          DTS:TextQualified="True"
+          DTS:ObjectName="ZIPCODE"
+          DTS:DTSID="{5B332B36-456B-4690-8C27-0D04130F5A74}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x0009_"
+          DTS:MaximumWidth="9"
+          DTS:DataType="130"
+          DTS:TextQualified="True"
+          DTS:ObjectName="CUSTOMER_TYPE"
+          DTS:DTSID="{DCA12FD8-9268-4303-8A45-ADAD07474B74}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x000D__x000A_"
+          DTS:DataType="16"
+          DTS:TextQualified="True"
+          DTS:ObjectName="REGION"
+          DTS:DTSID="{83DB6010-B0F9-4E7B-924B-02E26AC1233F}"
+          DTS:CreationName="" />
+      </DTS:FlatFileColumns>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

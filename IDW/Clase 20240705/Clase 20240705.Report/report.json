@@ -1,0 +1,120 @@
+{
+  "config": "{\"version\":\"5.51\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU02\",\"version\":\"5.53\",\"type\":2}},\"activeSectionIndex\":2,\"defaultDrillFilterOtherVisuals\":true,\"slowDataSourceSettings\":{\"isCrossHighlightingDisabled\":false,\"isSlicerSelectionsButtonEnabled\":false,\"isFilterSelectionsButtonEnabled\":false,\"isFieldWellButtonEnabled\":false,\"isApplyAllButtonEnabled\":false},\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"useEnhancedTooltips\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "pods": [
+    {
+      "boundSection": "25abe02939aeaad6635e",
+      "config": "{}",
+      "name": "53caa713e479e4186a01",
+      "parameters": "[{\"name\":\"Param_Filterba332a8afd0e5baab9b2\",\"boundFilter\":\"Filterba332a8afd0e5baab9b2\",\"fieldExpr\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Ventas\"}},\"Property\":\"REGION\"}},\"asAggregation\":true}]",
+      "type": 1
+    }
+  ],
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY24SU02",
+            "path": "BaseThemes/CY24SU02.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Mapa",
+      "displayOption": 1,
+      "filters": "[{\"name\":\"Filterba332a8afd0e5baab9b2\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Ventas\"}},\"Property\":\"REGION\"}},\"type\":\"Categorical\",\"howCreated\":5}]",
+      "height": 720.00,
+      "name": "25abe02939aeaad6635e",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"9d3ae4f4a3f00cf8aa51\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":0,\"width\":757.5853018372703,\"height\":650.0787401574803,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"map\",\"projections\":{\"Category\":[{\"queryRef\":\"Regiones.STATE\",\"active\":true}],\"Series\":[{\"queryRef\":\"Regiones.REGION\"}],\"Size\":[{\"queryRef\":\"Sum(Ventas.Edad_Cliente)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"Regiones\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"STATE\"},\"Name\":\"Regiones.STATE\",\"NativeReferenceName\":\"STATE\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"REGION\"},\"Name\":\"Regiones.REGION\",\"NativeReferenceName\":\"REGION\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Edad_Cliente\"}},\"Function\":1},\"Name\":\"Sum(Ventas.Edad_Cliente)\",\"NativeReferenceName\":\"Average of Edad_Cliente\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"mapControls\":[{\"properties\":{}}],\"categoryLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 650.08,
+          "width": 757.59,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"9da491596b264634c368\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"width\":100,\"height\":40,\"z\":1}}],\"singleVisual\":{\"visualType\":\"actionButton\",\"drillFilterOtherVisuals\":true,\"objects\":{\"icon\":[{\"properties\":{\"shapeType\":{\"expr\":{\"Literal\":{\"Value\":\"'back'\"}}}},\"selector\":{\"id\":\"default\"}}]},\"vcObjects\":{\"visualLink\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"type\":{\"expr\":{\"Literal\":{\"Value\":\"'Back'\"}}}}}]}},\"howCreated\":\"InsertVisualButton\"}",
+          "filters": "[]",
+          "height": 40.00,
+          "width": 100.00,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 1.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Punto 13",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "3996612c9006d2c00ecb",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"132a9df69b40b8bc660d\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.653092006033184,\"y\":0,\"z\":0,\"width\":789.6229260935144,\"height\":662.2021116138764,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"autoSelectVisualType\":false,\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 662.20,
+          "width": 789.62,
+          "x": 9.65,
+          "y": 0.00,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{\"relationships\":[{\"source\":\"fd346cc7b50486578c60\",\"target\":\"d5084bcca7622051d2e4\",\"type\":1}]}",
+      "displayName": "Punto 2",
+      "displayOption": 1,
+      "filters": "[{\"name\":\"Filter46f12cd7b7817186c800\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Ventas\"}},\"Property\":\"DATE\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"DATE\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"null\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":1,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}]",
+      "height": 720.00,
+      "name": "ReportSection",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"c16db7e8de888a1d6164\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":1000,\"width\":302.83356258596973,\"height\":82.75103163686381,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Ventas.DATE.Variation.Jerarquía de fechas.Año\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Select\":[{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Name\":\"Variation\",\"Property\":\"DATE\"}},\"Hierarchy\":\"Jerarquía de fechas\"}},\"Level\":\"Año\"},\"Name\":\"Ventas.DATE.Variation.Jerarquía de fechas.Año\",\"NativeReferenceName\":\"DATE Año\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Name\":\"Variation\",\"Property\":\"DATE\"}},\"Hierarchy\":\"Jerarquía de fechas\"}},\"Level\":\"Año\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Dropdown'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
+          "filters": "[]",
+          "height": 82.75,
+          "width": 302.83,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"d5084bcca7622051d2e4\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.653092006033184,\"y\":328.20512820512823,\"z\":0,\"width\":1139.0648567119156,\"height\":341.7194570135747,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Ventas.DATE.Variation.Jerarquía de fechas.Año\",\"active\":true},{\"queryRef\":\"Ventas.DATE.Variation.Jerarquía de fechas.Mes\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Ventas.Litros_venta)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Litros_venta\"}},\"Function\":0},\"Name\":\"Sum(Ventas.Litros_venta)\",\"NativeReferenceName\":\"Sum of Litros_venta\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Name\":\"Variation\",\"Property\":\"DATE\"}},\"Hierarchy\":\"Jerarquía de fechas\"}},\"Level\":\"Año\"},\"Name\":\"Ventas.DATE.Variation.Jerarquía de fechas.Año\",\"NativeReferenceName\":\"DATE Año\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Name\":\"Variation\",\"Property\":\"DATE\"}},\"Hierarchy\":\"Jerarquía de fechas\"}},\"Level\":\"Mes\"},\"Name\":\"Ventas.DATE.Variation.Jerarquía de fechas.Mes\",\"NativeReferenceName\":\"DATE Mes\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{}}}",
+          "filters": "[{\"name\":\"Filter7b21b1ebec0744b77404\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Ventas\"}},\"Property\":\"CUSTOMER_ID\"}},\"type\":\"Advanced\",\"howCreated\":1}]",
+          "height": 341.72,
+          "width": 1139.06,
+          "x": 9.65,
+          "y": 328.21,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"fd346cc7b50486578c60\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":61.77978883861237,\"z\":2000,\"width\":1168.024132730015,\"height\":241.3273001508296,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Clientes.FULL_NAME\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Ventas.QUANTITY)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Clientes\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FULL_NAME\"},\"Name\":\"Clientes.FULL_NAME\",\"NativeReferenceName\":\"FULL_NAME\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"QUANTITY\"}},\"Function\":0},\"Name\":\"Sum(Ventas.QUANTITY)\",\"NativeReferenceName\":\"Sum of QUANTITY\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"QUANTITY\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[{\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Clientes\"}},\"Property\":\"FULL_NAME\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"subquery\",\"Expression\":{\"Subquery\":{\"Query\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"Clientes\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"Ventas\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FULL_NAME\"},\"Name\":\"field\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"QUANTITY\"}},\"Function\":0}}}],\"Top\":5}}},\"Type\":2},{\"Name\":\"c\",\"Entity\":\"Clientes\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FULL_NAME\"}}],\"Table\":{\"SourceRef\":{\"Source\":\"subquery\"}}}}}]},\"type\":\"TopN\",\"howCreated\":0,\"isHiddenInViewMode\":false}]",
+          "height": 241.33,
+          "width": 1168.02,
+          "x": 0.00,
+          "y": 61.78,
+          "z": 2000.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}
