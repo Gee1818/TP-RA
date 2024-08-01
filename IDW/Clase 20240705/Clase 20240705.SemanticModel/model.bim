@@ -134,16 +134,6 @@
         "joinOnDateBehavior": "datePartOnly",
         "toColumn": "Date",
         "toTable": "LocalDateTable_bcb69752-cf31-46c3-b5e5-d54c19c43af5"
-      },
-      {
-        "name": "e0684bae-6b63-4dcf-138f-b8fbdc9d09e5",
-        "crossFilteringBehavior": "bothDirections",
-        "fromColumn": "REGION",
-        "fromTable": "Ventas",
-        "isActive": false,
-        "toCardinality": "many",
-        "toColumn": "REGION",
-        "toTable": "Regiones"
       }
     ],
     "sourceQueryCulture": "es-AR",
