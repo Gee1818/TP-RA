@@ -134,6 +134,14 @@
         "joinOnDateBehavior": "datePartOnly",
         "toColumn": "Date",
         "toTable": "LocalDateTable_bcb69752-cf31-46c3-b5e5-d54c19c43af5"
+      },
+      {
+        "name": "5e8bea26-d2da-4e2b-bac5-1311870f34a1",
+        "fromColumn": "BIRTH_DATE",
+        "fromTable": "Employee",
+        "joinOnDateBehavior": "datePartOnly",
+        "toColumn": "Date",
+        "toTable": "LocalDateTable_ebd9996d-0cb8-4550-be39-8ad2b4a6a2b1"
       }
     ],
     "sourceQueryCulture": "es-AR",
@@ -2659,6 +2667,10 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "__PBI_SemanticLinks",
+                "value": "[{\"LinkTarget\":{\"TableName\":\"Ventas\",\"TableItemName\":\"Edad_Cliente (bins)\",\"ObjectType\":4},\"LinkType\":\"UsedInGroup\"}]"
               }
             ],
             "dataType": "int64",
@@ -2667,6 +2679,59 @@
             "isDataTypeInferred": true,
             "lineageTag": "540c91ec-695b-4b4b-84de-90b67edfaa87",
             "summarizeBy": "sum",
+            "type": "calculated"
+          },
+          {
+            "name": "Edad_Cliente (bins)",
+            "annotations": [
+              {
+                "name": "GroupingDesignState",
+                "value": "{\"Version\":0,\"Sources\":[{\"Name\":\"v\",\"Entity\":\"Ventas\"}],\"GroupedColumns\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Edad_Cliente\"}}],\"BinItem\":{\"Expression\":{\"Floor\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Edad_Cliente\"}},\"Size\":5.0}}}}"
+              },
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": [
+              "IF(",
+              "\tISBLANK('Ventas'[Edad_Cliente]),",
+              "\tBLANK(),",
+              "\tINT('Ventas'[Edad_Cliente] / 5) * 5",
+              ")"
+            ],
+            "extendedProperties": [
+              {
+                "name": "GroupingMetadata",
+                "type": "json",
+                "value": {
+                  "binningMetadata": {
+                    "binSize": {
+                      "unit": 0,
+                      "value": 5.0
+                    }
+                  },
+                  "groupedColumns": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Ventas"
+                          }
+                        },
+                        "Property": "Edad_Cliente"
+                      }
+                    }
+                  ],
+                  "version": 0
+                }
+              }
+            ],
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "4d4f19bd-3130-4fe8-a1b0-c995e70b66eb",
+            "summarizeBy": "none",
             "type": "calculated"
           }
         ],
@@ -2763,12 +2828,33 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
               }
             ],
-            "dataType": "string",
+            "changedProperties": [
+              {
+                "property": "DataType"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Short Date",
             "lineageTag": "84bd2d64-7d7a-4067-bfa8-933d31b6ae34",
             "sourceColumn": "BIRTH_DATE",
-            "summarizeBy": "none"
+            "summarizeBy": "none",
+            "variations": [
+              {
+                "name": "Variation",
+                "defaultHierarchy": {
+                  "hierarchy": "Jerarquía de fechas",
+                  "table": "LocalDateTable_ebd9996d-0cb8-4550-be39-8ad2b4a6a2b1"
+                },
+                "isDefault": true,
+                "relationship": "5e8bea26-d2da-4e2b-bac5-1311870f34a1"
+              }
+            ]
           },
           {
             "name": "EDUCATION_LEVEL",
@@ -3515,6 +3601,207 @@
             "mode": "import",
             "source": {
               "expression": "Calendar(Date(Year(MIN('Clientes'[BIRTH_DATE])), 1, 1), Date(Year(MAX('Clientes'[BIRTH_DATE])), 12, 31))",
+              "type": "calculated"
+            }
+          }
+        ],
+        "showAsVariationsOnly": true
+      },
+      {
+        "name": "LocalDateTable_ebd9996d-0cb8-4550-be39-8ad2b4a6a2b1",
+        "annotations": [
+          {
+            "name": "__PBI_LocalDateTable",
+            "value": "true"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "05b65d68-4d68-47db-b472-38fa8da4af44",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Año",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "isHidden": true,
+            "lineageTag": "5a956963-2a44-4803-90b5-8ba65dee8e9d",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "NroMes",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "isHidden": true,
+            "lineageTag": "18ff367a-b64a-4689-9bd5-bce496797c1c",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Mes",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "8a6d6197-b93b-4223-9bb3-80e63bfb1e70",
+            "sortByColumn": "NroMes",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "NroTrimestre",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([NroMes] + 2) / 3)",
+            "isHidden": true,
+            "lineageTag": "a1546968-da35-4345-b3c0-d2b3082691d7",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Trimestre",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Trim. \" & [NroTrimestre]",
+            "isHidden": true,
+            "lineageTag": "f8b4a715-5fff-4118-8c45-385a0e100b35",
+            "sortByColumn": "NroTrimestre",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Día",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "isHidden": true,
+            "lineageTag": "cde485e2-e015-4392-ba7c-383ce91eca88",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Jerarquía de fechas",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Año",
+                "column": "Año",
+                "lineageTag": "156fbf16-850c-4947-9bfa-22ff24799867",
+                "ordinal": 0
+              },
+              {
+                "name": "Trimestre",
+                "column": "Trimestre",
+                "lineageTag": "99b917ea-961a-4dd9-b5ff-0195d3d5a4ea",
+                "ordinal": 1
+              },
+              {
+                "name": "Mes",
+                "column": "Mes",
+                "lineageTag": "581bee99-27dc-4c82-b663-91e484cb382d",
+                "ordinal": 2
+              },
+              {
+                "name": "Día",
+                "column": "Día",
+                "lineageTag": "11ee548c-f6b6-4133-9b19-b7eb6abd139b",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "27989da1-d13b-489a-ae1d-5c7e3d5913c7"
+          }
+        ],
+        "isHidden": true,
+        "lineageTag": "8483e816-f19d-47a7-86ae-ccdf9e824247",
+        "partitions": [
+          {
+            "name": "LocalDateTable_ebd9996d-0cb8-4550-be39-8ad2b4a6a2b1",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(Year(MIN('Employee'[BIRTH_DATE])), 1, 1), Date(Year(MAX('Employee'[BIRTH_DATE])), 12, 31))",
               "type": "calculated"
             }
           }
